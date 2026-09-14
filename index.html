@@ -1232,29 +1232,39 @@
 
     // Basketball Jersey Archive se sirve a través de este Worker para evitar
     // bloqueos de hotlink/referrer cuando la web está publicada.
-    function getImageUrl(url) {
-      const raw = String(url || '').trim();
-      if (!raw) return '';
+    // function getImageUrl(url) {
+    //   const raw = String(url || '').trim();
+    //   if (!raw) return '';
 
-      try {
-        const parsed = new URL(raw, window.location.href);
-        const host = parsed.hostname.toLowerCase();
-        const proxyHosts = new Set([
-          'basketballjerseyarchive.com',
-          'www.basketballjerseyarchive.com',
-          'footballkitarchive.com',
-          'www.footballkitarchive.com',
-          'i.ebayimg.com',
-          'blogger.googleusercontent.com'
-        ]);
+    //   try {
+    //     const parsed = new URL(raw, window.location.href);
+    //     const host = parsed.hostname.toLowerCase();
+    //     const proxyHosts = new Set([
+    //       'basketballjerseyarchive.com',
+    //       'www.basketballjerseyarchive.com',
+    //       'footballkitarchive.com',
+    //       'www.footballkitarchive.com',
+    //       'i.ebayimg.com',
+    //       'blogger.googleusercontent.com'
+    //     ]);
 
-        return proxyHosts.has(host)
-          ? `/image-proxy?url=${encodeURIComponent(parsed.href)}`
-          : raw;
-      } catch (e) {
+    //     return proxyHosts.has(host)
+    //       ? `/image-proxy?url=${encodeURIComponent(parsed.href)}`
+    //       : raw;
+    //   } catch (e) {
+    //     return raw;
+    //   }
+    // }
+
+        function getImageUrl(url) {
+        let raw = String(url || '').trim();
+        if (!raw) return '';
+        const markdownMatch = raw.match(/\]\((https?:\/\/[^)]+)\)/);
+        if (markdownMatch) {
+          raw = markdownMatch[1];
+        }
         return raw;
       }
-    }
 
     async function fetchData() {
       try {
@@ -1304,7 +1314,7 @@
             marca: row[COLS.marca] || 'N/A',
             color1: row[COLS.color1] || '',
             color2: row[COLS.color2] || '',
-            numero: (row[COLS.numero] && row[COLS.numero] !== '-') ? row[COLS.numero] : '',
+            numero:  row[COLS.numero] || '',
             nombre: row[COLS.nombre] || '',
             autenticidad: row[COLS.autenticidad] || '',
             deporte: row[COLS.deporte] || '',
@@ -1505,8 +1515,8 @@
             ${numero ? `
             <div class="meta-row">
               <span class="meta-label">Dorsal:</span>
-              <span class="meta-val">#${numero}</span>
-            </div>` : ''}
+              <span class="meta-val">${numero}</span>
+            </div>` : '-'}
           </div>
         ` : ''}
 
