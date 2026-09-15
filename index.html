@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="dark">
   <title>iCastizo — Museo & Colección de Camisetas</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap');
@@ -36,6 +37,8 @@
     body {
       margin: 0;
       padding: 0;
+      color-scheme: dark;
+      forced-color-adjust: none;
     }
 
     body {
@@ -725,6 +728,20 @@
       cursor: zoom-in;
     }
 
+    /* Favorito dentro de la imagen del detalle, separado del botón de cierre del modal */
+    .modal-image-fav {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      z-index: 12;
+      margin: 0;
+    }
+
+    .modal-image-fav:hover,
+    .modal-image-fav.active {
+      transform: scale(1.08);
+    }
+
     .modal-image-col img {
       width: 100%;
       max-height: 440px;
@@ -981,25 +998,265 @@
       margin-top: 80px;
     }
 
+    /* Responsive mejorado: tablet, móvil y pantallas muy pequeñas */
+    @media (max-width: 1024px) {
+      header {
+        padding: 72px 0 54px;
+      }
+
+      .header-inner {
+        max-width: 820px;
+      }
+
+      h1 {
+        font-size: clamp(48px, 7vw, 64px);
+      }
+
+      .controls-inner,
+      .active-filters-bar,
+      .results-count,
+      .content {
+        padding-left: 22px;
+        padding-right: 22px;
+      }
+
+      .gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .card-content {
+        padding: 18px;
+      }
+
+      .card-team {
+        font-size: 18px;
+      }
+    }
+
     @media (max-width: 768px) {
+      body {
+        overflow-x: hidden;
+      }
+
+      header {
+        padding: 52px 0 34px;
+      }
+
+      .header-inner {
+        padding: 0 18px;
+      }
+
+      h1 {
+        font-size: clamp(34px, 10vw, 48px);
+        letter-spacing: -1.8px;
+        margin-bottom: 14px;
+      }
+
+      .description {
+        font-size: 14px;
+        line-height: 1.65;
+        margin-bottom: 28px;
+      }
+
+      .stats-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stat-cell {
+        padding: 15px 10px;
+      }
+
+      .stat-number {
+        font-size: 25px;
+      }
+
+      .controls {
+        padding: 10px 0;
+      }
+
       .controls-inner {
         flex-direction: column;
         align-items: stretch;
+        gap: 9px;
+        padding: 0 14px;
+      }
+
+      .sports-filter {
+        width: 100%;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .sports-filter::-webkit-scrollbar {
+        display: none;
+      }
+
+      .sport-btn {
+        flex: 0 0 auto;
+        white-space: nowrap;
+        min-height: 38px;
+        padding: 8px 13px;
+      }
+
+      .search-box {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .search-box input,
+      .filter-group select,
+      .sort-select {
+        min-height: 42px;
+        font-size: 14px;
+      }
+
+      .filter-group {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .filter-group select {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .sort-select {
+        width: 100%;
       }
 
       .view-btns {
         margin-left: 0;
         width: 100%;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .view-btn {
+        min-height: 40px;
+        padding: 7px 8px;
+      }
+
+      .active-filters-bar,
+      .results-count,
+      .content {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+
+      .active-filters-bar {
+        margin-top: 8px;
+        gap: 7px;
+      }
+
+      .results-count {
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font-size: 11px;
       }
 
       .gallery {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        gap: 18px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
       }
 
-      h1 {
-        font-size: 42px;
+      .card {
+        min-width: 0;
+      }
+
+      .card-content {
+        padding: 13px;
+      }
+
+      .card-season {
+        font-size: 9px;
+        letter-spacing: 1px;
+      }
+
+      .card-team {
+        font-size: 16px;
+        line-height: 1.18;
+      }
+
+      .card-club {
+        font-size: 11px;
+        margin-bottom: 10px;
+      }
+
+      .card-meta {
+        padding: 8px 9px;
+        font-size: 11px;
+        margin-bottom: 10px;
+      }
+
+      .meta-row {
+        gap: 6px;
+      }
+
+      .meta-label {
+        font-size: 10px;
+      }
+
+      .meta-val {
+        text-align: right;
+        overflow-wrap: anywhere;
+      }
+
+      .card-details {
+        gap: 4px;
+      }
+
+      .detail-tag {
+        font-size: 9px;
+        padding: 3px 7px;
+      }
+
+      .card-fav-btn {
+        top: 8px;
+        right: 8px;
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .card-toggle {
+        font-size: 10px;
+        margin-top: 9px;
+      }
+
+      .table-view {
+        margin-top: 12px;
+        border-radius: 10px;
+      }
+
+      table {
+        min-width: 920px;
+      }
+
+      th {
+        padding: 12px 14px;
+      }
+
+      td {
+        padding: 12px 14px;
+      }
+
+      .modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+      }
+
+      .modal-container {
+        width: 100%;
+        max-width: none;
+        max-height: 94vh;
+        border-radius: 22px 22px 0 0;
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
       }
 
       .modal-body {
@@ -1007,7 +1264,89 @@
       }
 
       .modal-image-col {
-        min-height: 280px;
+        min-height: 240px;
+        max-height: 42vh;
+        padding: 24px;
+      }
+
+      .modal-image-col img {
+        max-height: 34vh;
+      }
+
+      .modal-image-col svg {
+        max-height: 230px;
+      }
+
+      .modal-info-col {
+        padding: 28px 20px 30px;
+      }
+
+      .modal-team {
+        font-size: 27px;
+      }
+
+      .modal-grid-details {
+        gap: 14px;
+      }
+
+      .modal-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+      }
+
+      .modal-image-fav {
+        top: 12px;
+        right: 12px;
+      }
+
+      footer {
+        padding: 28px 18px;
+        margin-top: 50px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-group {
+        grid-template-columns: 1fr;
+      }
+
+      .card-image {
+        aspect-ratio: 1.08;
+      }
+
+      .card-team {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 340px) {
+      h1 {
+        font-size: 32px;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .view-btn {
+        font-size: 11px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
       }
     }
   </style>
@@ -1120,8 +1459,27 @@
     const COLS = {
       temporada: 0, equipo: 1, club: 2, pais: 3, tipo: 4, edicion: 5, marca: 6,
       color1: 7, color2: 8, numero: 9, nombre: 10, autenticidad: 11, deporte: 12,
-      foto: 13, notas: 14, url: 15
+      foto: 13, notas: 14, url: 15, detalleCamiseta: 16
     };
+
+    // La columna de diseño se localiza por nombre para que el SVG no dependa
+    // de que alguien inserte o mueva columnas en Google Sheets.
+    function normalizeHeader(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]/gi, '')
+        .toLowerCase();
+    }
+
+    function findColumn(headers, aliases, fallback = -1) {
+      const normalized = headers.map(normalizeHeader);
+      for (const alias of aliases) {
+        const idx = normalized.indexOf(normalizeHeader(alias));
+        if (idx >= 0) return idx;
+      }
+      return fallback;
+    }
 
     let DATA = [];
     let currentView = 'grid';
@@ -1172,61 +1530,200 @@
       if (!val) return '#FFFFFF';
       if (typeof val === 'object') val = val.bg || val.color || val.hex || '#FFFFFF';
       const str = String(val).trim();
-      const hexMatch = str.match(/#?([0-9A-Fa-f]{6})/);
+
+      // Acepta HEX, rgb()/rgba() y nombres habituales.
+      const hexMatch = str.match(/#?([0-9A-Fa-f]{6})(?:FF)?$/);
       if (hexMatch) return '#' + hexMatch[1];
 
+      const rgbMatch = str.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+      if (rgbMatch) {
+        return '#' + [rgbMatch[1], rgbMatch[2], rgbMatch[3]]
+          .map(v => Number(v).toString(16).padStart(2, '0'))
+          .join('').toUpperCase();
+      }
+
       const dict = {
-        'blanco': '#FFFFFF', 'azul': '#2159A8', 'azul marino': '#001A4D',
-        'rojo': '#E20613', 'negro': '#0d0d0d', 'amarillo': '#FFE500',
-        'verde': '#008751', 'naranja': '#FF6600', 'gris': '#808080'
+        'blanco': '#FFFFFF', 'blanco roto': '#F5F1E8', 'crema': '#F5F1E8',
+        'azul': '#2159A8', 'azul claro': '#5B9BD5', 'azul marino': '#001A4D',
+        'azul oscuro': '#001A4D', 'azul real': '#003DA5', 'celeste': '#87CEEB',
+        'rojo': '#E20613', 'rojo oscuro': '#A50000', 'granate': '#7A0019',
+        'negro': '#0D0D0D', 'amarillo': '#FFE500', 'amarillo oro': '#F2C500',
+        'dorado': '#D4AF37', 'verde': '#008751', 'verde oscuro': '#006B3C',
+        'naranja': '#FF6600', 'gris': '#808080', 'gris claro': '#BFC3C7',
+        'morado': '#6A1B9A', 'morado oscuro': '#4A148C', 'rosa': '#E91E63',
+        'rosa fuerte': '#D81B60', 'turquesa': '#00A6A6', 'burdeos': '#800020',
+        'violeta': '#7F3FBF'
       };
+
       return dict[str.toLowerCase()] || '#DCD5CC';
     }
 
-    /* Ilustraciones Vectoriales Pro (Cuellos, Mangas y Franjas) */
-    function jerseySVGFootball(c1, c2, num) {
-      const h1 = colorHex(c1), h2 = colorHex(c2);
-      const gradId = 'grad-fb-' + Math.random().toString(36).substring(2, 9);
-      return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="${gradId}">
-        <stop offset="0%" style="stop-color:${h1};stop-opacity:1"/>
-        <stop offset="100%" style="stop-color:${h1}dd;stop-opacity:1"/>
-      </linearGradient>
-    </defs>
-    <!-- Cuerpo principal -->
-    <path d="M60 10 L20 40 L35 65 L55 52 L55 150 L145 150 L145 52 L165 65 L180 40 L140 10 L120 10 C120 20 110 26 100 26 C90 26 80 20 80 10 Z" fill="url(#${gradId})" stroke="#070a11" stroke-width="2.5" stroke-linejoin="round"/>
-    <!-- Franja secundaria estilizada -->
-    <path d="M85 18 L85 150 M115 18 L115 150" stroke="${h2}" stroke-width="8" opacity="0.35"/>
-    <!-- Mangas -->
-    <path d="M60 10 L20 40 L35 65 L55 52 Z" fill="${h2}" opacity="0.8"/>
-    <path d="M140 10 L180 40 L165 65 L145 52 Z" fill="${h2}" opacity="0.8"/>
-    <!-- Cuello -->
-    <path d="M80 10 C80 22 120 22 120 10 Z" fill="none" stroke="${h2}" stroke-width="4"/>
-    ${num ? `<text x="100" y="112" font-family="'Space Grotesk', sans-serif" font-size="46" font-weight="700" text-anchor="middle" fill="${h2}">${num}</text>` : ''}
-  </svg>`;
+    // '-' y variantes equivalen a valor vacío en nombre/dorsal.
+    function cleanJerseyText(value) {
+      const s = String(value ?? '').trim();
+      return (!s || /^[-–—]+$/.test(s)) ? '' : s;
     }
 
-    function jerseySVGBasketball(c1, c2, num) {
-      const h1 = colorHex(c1), h2 = colorHex(c2);
-      const gradId = 'grad-bb-' + Math.random().toString(36).substring(2, 9);
-      return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="${gradId}">
-        <stop offset="0%" style="stop-color:${h1};stop-opacity:1"/>
-        <stop offset="100%" style="stop-color:${h1}dd;stop-opacity:1"/>
-      </linearGradient>
-    </defs>
-    <path d="M70 15 L75 40 L75 150 L125 150 L125 40 L130 15 Z" fill="url(#${gradId})" stroke="#070a11" stroke-width="2.5" stroke-linejoin="round"/>
-    <path d="M70 15 L65 30 L70 50 Z" fill="${h2}" opacity="0.9"/>
-    <path d="M130 15 L135 30 L130 50 Z" fill="${h2}" opacity="0.9"/>
-    <path d="M85 15 C85 30 115 30 115 15 Z" fill="none" stroke="${h2}" stroke-width="4"/>
-    ${num ? `<text x="100" y="110" font-family="'Space Grotesk', sans-serif" font-size="48" font-weight="700" text-anchor="middle" fill="${h2}">${num}</text>` : ''}
-  </svg>`;
+    function resolveJerseyColor(rawValue, formattedColor) {
+      const raw = String(rawValue ?? '').trim();
+      if (raw) {
+        const parsed = colorHex(raw);
+        // colorHex devuelve el beige de reserva cuando el nombre no está reconocido.
+        const normalized = normalizeDetail(raw);
+        const knownNames = [
+          'blanco','blanco roto','crema','azul','azul claro','azul marino','azul oscuro','azul real','celeste',
+          'rojo','rojo oscuro','granate','negro','amarillo','amarillo oro','dorado','verde','verde oscuro',
+          'naranja','gris','gris claro','morado','morado oscuro','rosa','rosa fuerte','turquesa','burdeos','violeta'
+        ];
+        if (/^#?[0-9a-f]{6}$/i.test(raw) || /^rgba?\(/i.test(raw) || knownNames.includes(normalized)) {
+          return parsed;
+        }
+      }
+      return colorHex(formattedColor || '#DCD5CC');
     }
 
-    function jerseySVG(c1, c2, num, deporte) {
-      return (deporte && deporte.toLowerCase() === 'baloncesto') ? jerseySVGBasketball(c1, c2, num) : jerseySVGFootball(c1, c2, num);
+
+    // Estimación de superficie del color2 según el patrón de DetalleCamiseta.
+    // Se usa exclusivamente para decidir el color del nombre/dorsal.
+    function color2Coverage(detail) {
+      const d = normalizeDetail(detail);
+      if (/cuadros|damero|checker|cuadriculad|mitad|bicolor|dos colores|dos mitades/.test(d)) return 0.50;
+      if (/horizontal|hoops|hoop|barras horizontal/.test(d)) {
+        if (/finas?|estrechas?/.test(d)) return 0.35;
+        if (/anchas?|gruesas?/.test(d)) return 0.50;
+        return 0.45;
+      }
+      if (/vertical|rayas|franjas? verticales?|barras verticales?/.test(d)) {
+        if (/finas?|estrechas?/.test(d)) return 0.35;
+        if (/anchas?|gruesas?/.test(d)) return 0.50;
+        return 0.45;
+      }
+      if (/central/.test(d)) return 0.23;
+      if (/diagonal|slash/.test(d)) return /doble|dos|gemelas/.test(d) ? 0.30 : 0.22;
+      if (/pico|chevron|v inversa|en v/.test(d)) return 0.18;
+      return 0.15;
+    }
+
+    function getJerseyMarkColor(c1, c2, detalleCamiseta) {
+      // Regla solicitada: normalmente color2; si color2 ocupa igual o más
+      // superficie que color1, usar color1 para garantizar contraste.
+      return color2Coverage(detalleCamiseta) >= 0.50 ? colorHex(c1) : colorHex(c2);
+    }
+
+    /* Ilustraciones Vectoriales Pro: el patrón se decide por DetalleCamiseta. */
+    function uniqueSvgId(prefix = 'svg') {
+      return `${prefix}-${Math.random().toString(36).slice(2, 10)}`;
+    }
+
+    function normalizeDetail(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+    }
+
+    function escapeXml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    }
+
+    function jerseyBodyFootball() {
+      return 'M60 10 L20 40 L35 65 L55 52 L55 150 L145 150 L145 52 L165 65 L180 40 L140 10 L120 10 C120 20 110 26 100 26 C90 26 80 20 80 10 Z';
+    }
+
+    function jerseyBodyBasketball() {
+      return 'M70 15 L75 40 L75 150 L125 150 L125 40 L130 15 L115 12 L100 25 L85 12 Z';
+    }
+
+    function jerseyPattern(detail, bodyPath, c1, c2, deporte, id) {
+      const d = normalizeDetail(detail);
+      const isBasket = normalizeDetail(deporte) === 'baloncesto';
+      const clipId = `${id}-clip`;
+      const parts = [];
+
+      // Más específico primero para evitar colisiones entre "rayas" y "vertical".
+      if (/cuadros|damero|checker|cuadriculad/.test(d)) {
+        parts.push(`<g clip-path="url(#${clipId})">`);
+        const cell = 18;
+        for (let y = 10, row = 0; y < 150; y += cell, row++) {
+          for (let x = 20, col = 0; x < 180; x += cell, col++) {
+            if ((row + col) % 2 === 1) parts.push(`<rect x="${x}" y="${y}" width="${cell}" height="${cell}" fill="${c2}" opacity="0.95"/>`);
+          }
+        }
+        parts.push('</g>');
+      } else if (/mitad|mitad(es)?|mitad partido|bicolor|dos colores|dos mitades/.test(d)) {
+        parts.push(`<path d="M100 0 V160 H220 V0 Z" fill="${c2}" clip-path="url(#${clipId})"/>`);
+      } else if (/diagonal|banda diagonal|franja diagonal|slash/.test(d)) {
+        parts.push(`<path d="M-20 115 L170 -10 L185 18 L-5 145 Z" fill="${c2}" clip-path="url(#${clipId})" opacity="0.95"/>`);
+        if (/doble|dos|gemelas/.test(d)) parts.push(`<path d="M-8 145 L182 20 L194 44 L4 169 Z" fill="${c2}" clip-path="url(#${clipId})" opacity="0.9"/>`);
+      } else if (/horizontal|hoops|hoop|franja[s]? (horizontal|horizontales)|barras horizontal/.test(d)) {
+        const count = /finas?|estrechas?/.test(d) ? 7 : /anchas?|gruesas?/.test(d) ? 4 : 5;
+        const band = 140 / (count * 2);
+        for (let i = 0; i < count; i++) {
+          const y = 10 + (i * 2 + 0.5) * band;
+          parts.push(`<rect x="15" y="${y}" width="170" height="${band}" fill="${c2}" clip-path="url(#${clipId})" opacity="0.96"/>`);
+        }
+      } else if (/vertical|rayas? verticales?|franjas? verticales?|barras verticales?/.test(d) || /rayas/.test(d)) {
+        const count = /finas?|estrechas?/.test(d) ? 9 : /anchas?|gruesas?/.test(d) ? 4 : 5;
+        const band = 160 / (count * 2);
+        for (let i = 0; i < count; i++) {
+          const x = 20 + (i * 2 + 0.5) * band;
+          parts.push(`<rect x="${x}" y="5" width="${band}" height="155" fill="${c2}" clip-path="url(#${clipId})" opacity="0.96"/>`);
+        }
+      } else if (/pico|chevron|v inversa|en v/.test(d)) {
+        parts.push(`<path d="M35 20 L100 75 L165 20 L165 47 L100 103 L35 47 Z" fill="${c2}" clip-path="url(#${clipId})" opacity="0.95"/>`);
+      } else if (/banda central|franja central|central/.test(d)) {
+        parts.push(`<rect x="82" y="0" width="36" height="160" fill="${c2}" clip-path="url(#${clipId})" opacity="0.95"/>`);
+      }
+
+      // Detalle de cuello y hombros, conservando el deporte.
+      if (isBasket) {
+        parts.push(`<path d="M70 15 L65 30 L70 50 Z" fill="${c2}" opacity="0.9"/>`);
+        parts.push(`<path d="M130 15 L135 30 L130 50 Z" fill="${c2}" opacity="0.9"/>`);
+        parts.push(`<path d="M85 15 C85 30 115 30 115 15" fill="none" stroke="${c2}" stroke-width="4"/>`);
+      } else {
+        parts.push(`<path d="M60 10 L20 40 L35 65 L55 52 Z" fill="${c2}" opacity="0.85"/>`);
+        parts.push(`<path d="M140 10 L180 40 L165 65 L145 52 Z" fill="${c2}" opacity="0.85"/>`);
+        parts.push(`<path d="M80 10 C80 22 120 22 120 10" fill="none" stroke="${c2}" stroke-width="4"/>`);
+      }
+
+      return parts.join('');
+    }
+
+    function jerseySVG(c1, c2, num, deporte, detalleCamiseta, nombre = '') {
+      const h1 = colorHex(c1), h2 = colorHex(c2);
+      const id = uniqueSvgId(normalizeDetail(deporte) === 'baloncesto' ? 'bb' : 'fb');
+      const isBasket = normalizeDetail(deporte) === 'baloncesto';
+      const body = isBasket ? jerseyBodyBasketball() : jerseyBodyFootball();
+      const safeNum = cleanJerseyText(num);
+      const safeName = cleanJerseyText(nombre);
+      const safeNumXml = escapeXml(safeNum);
+      const safeNameXml = escapeXml(safeName);
+      const markColor = getJerseyMarkColor(h1, h2, detalleCamiseta);
+      const pattern = jerseyPattern(detalleCamiseta, body, h1, h2, deporte, id);
+
+      return `<svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Camiseta">
+        <defs>
+          <clipPath id="${id}-clip"><path d="${body}"/></clipPath>
+          <linearGradient id="${id}-base" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="${h1}"/>
+            <stop offset="100%" stop-color="${h1}dd"/>
+          </linearGradient>
+          <filter id="${id}-shadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#000" flood-opacity="0.45"/>
+          </filter>
+        </defs>
+        <path d="${body}" fill="url(#${id}-base)" stroke="#070a11" stroke-width="2.5" stroke-linejoin="round" filter="url(#${id}-shadow)"/>
+        ${pattern}
+        <path d="${body}" fill="none" stroke="#070a11" stroke-width="2.5" stroke-linejoin="round"/>
+        ${safeName ? `<text x="100" y="76" font-family="'Space Grotesk', sans-serif" font-size="${safeName.length > 10 ? 9 : 11}px" font-weight="700" text-anchor="middle" fill="${markColor}">${safeNameXml}</text>` : ''}
+        ${safeNum ? `<text x="100" y="${safeName ? 112 : 108}" font-family="'Space Grotesk', sans-serif" font-size="${isBasket ? 44 : 42}" font-weight="700" text-anchor="middle" fill="${markColor}">${safeNumXml}</text>` : ''}
+      </svg>`;
     }
 
     // Basketball Jersey Archive se sirve a través de este Worker para evitar
@@ -1270,11 +1767,19 @@
         document.getElementById('loading').style.display = 'block';
         document.getElementById('errorState').classList.remove('show');
 
-        const valuesUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/'Camisetas'!A:Q?key=${API_KEY}`;
+        const valuesUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/'Camisetas'!A:R?key=${API_KEY}`;
         const valuesResp = await fetch(valuesUrl);
         if (!valuesResp.ok) throw new Error(`Google Sheets API: ${valuesResp.status}`);
         const valuesData = await valuesResp.json();
         const rows = valuesData.values || [];
+        const headers = rows[0] || [];
+
+        // Detectamos DetalleCamiseta por nombre; fallback al índice 16 para compatibilidad.
+        COLS.detalleCamiseta = findColumn(
+          headers,
+          ['DetalleCamiseta', 'Detalle Camiseta', 'detalle_camiseta', 'detalle camisetas'],
+          COLS.detalleCamiseta
+        );
 
         const formatUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets(properties(sheetId,title),data(rowData(values(effectiveFormat.backgroundColor))))&key=${API_KEY}`;
         const formatResp = await fetch(formatUrl);
@@ -1317,6 +1822,7 @@
             nombre: row[COLS.nombre] || '',
             autenticidad: row[COLS.autenticidad] || '',
             deporte: row[COLS.deporte] || '',
+            detalleCamiseta: COLS.detalleCamiseta >= 0 ? (row[COLS.detalleCamiseta] || '') : '',
             url: row[COLS.url] || '',
             notas: row[COLS.notas] || '',
             colors
@@ -1401,8 +1907,16 @@
       document.getElementById('stats').innerHTML = stats.map(s => `<div class="stat-cell"><span class="stat-number">${s.value}</span><span class="stat-label">${s.label}</span></div>`).join('');
     }
 
+    function normalizeSearchText(value) {
+      return String(value ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+    }
+
     function getFiltered() {
-      const q = document.getElementById('search').value.toLowerCase();
+      const q = normalizeSearchText(document.getElementById('search').value);
       const filters = {
         pais: document.getElementById('filterPais')?.value || '',
         tipo: document.getElementById('filterTipo')?.value || '',
@@ -1418,7 +1932,7 @@
         if (filters.marca && d.marca !== filters.marca) return false;
         if (filters.autenticidad && d.autenticidad !== filters.autenticidad) return false;
         if (q) {
-          const hay = `${d.equipo} ${d.club} ${d.nombre} ${d.temporada} ${d.pais}`.toLowerCase();
+          const hay = normalizeSearchText(`${d.equipo} ${d.club} ${d.nombre} ${d.temporada} ${d.pais}`);
           if (!hay.includes(q)) return false;
         }
         return true;
@@ -1481,12 +1995,12 @@
       const gal = document.getElementById('gallery');
       gal.innerHTML = items.map((d, index) => {
         const hasFoto = d.url && d.url.trim().length > 0;
-        const c1 = d.color1 || (d.colors && d.colors.color1 ? d.colors.color1.bg : '');
-        const c2 = d.color2 || (d.colors && d.colors.color2 ? d.colors.color2.bg : '');
+        const c1 = resolveJerseyColor(d.color1, d.colors?.color1?.bg);
+        const c2 = resolveJerseyColor(d.color2, d.colors?.color2?.bg);
 
         // Solo mostrar el bloque de personalización si existe nombre y/o dorsal real.
-        const nombre = String(d.nombre || '').trim();
-        const numero = String(d.numero || '').trim();
+        const nombre = cleanJerseyText(d.nombre);
+        const numero = cleanJerseyText(d.numero);
         const tieneNombreODorsal = Boolean(nombre || numero);
         const isFav = favorites.includes(d.id);
 
@@ -1497,7 +2011,7 @@
 
       <div class="card-image">
         ${hasFoto ? `<img src="${getImageUrl(d.url)}" alt="${d.equipo}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
-        <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">${jerseySVG(c1, c2, d.numero, d.deporte)}</div>
+        <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">${jerseySVG(c1, c2, d.numero, d.deporte, d.detalleCamiseta, d.nombre)}</div>
       </div>
       <div class="card-content">
         <div class="card-season">${d.temporada}</div>
@@ -1557,8 +2071,8 @@
       <td>${d.pais}</td>
       <td>${d.tipo}</td>
       <td>${d.marca}</td>
-      <td>${d.numero || '—'}</td>
-      <td>${d.nombre || '—'}</td>
+      <td>${cleanJerseyText(d.numero) || '—'}</td>
+      <td>${cleanJerseyText(d.nombre) || '—'}</td>
       <td>${d.autenticidad}</td>
       <td>${d.deporte}</td>
     </tr>`;
@@ -1577,34 +2091,32 @@
     function openModal(d) {
       const hasFoto = d.url && d.url.trim().length > 0;
       const imageUrl = getImageUrl(d.url);
-      const c1 = d.color1 || (d.colors && d.colors.color1 ? d.colors.color1.bg : '');
-      const c2 = d.color2 || (d.colors && d.colors.color2 ? d.colors.color2.bg : '');
+      const c1 = resolveJerseyColor(d.color1, d.colors?.color1?.bg);
+      const c2 = resolveJerseyColor(d.color2, d.colors?.color2?.bg);
       const isFav = favorites.includes(d.id);
 
       const modalBody = document.getElementById('modalBody');
       modalBody.innerHTML = `
     <div class="modal-image-col" onclick='openLightbox(${JSON.stringify(imageUrl)})'>
+      <button class="card-fav-btn modal-image-fav ${isFav ? 'active' : ''}" onclick="toggleFavorite('${d.id}', event); openModal(DATA.find(x=>x.id==='${d.id}'));" title="Guardar en Favoritos">
+        ${isFav ? '★' : '☆'}
+      </button>
       ${hasFoto ? `<img src="${imageUrl}" alt="${d.equipo}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
-      <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">${jerseySVG(c1, c2, d.numero, d.deporte)}</div>
+      <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">${jerseySVG(c1, c2, d.numero, d.deporte, d.detalleCamiseta, d.nombre)}</div>
     </div>
     <div class="modal-info-col">
-      <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-        <div class="modal-season">${d.temporada} • ${d.deporte || 'Deporte'}</div>
-        <button class="card-fav-btn ${isFav ? 'active' : ''}" style="position:static;" onclick="toggleFavorite('${d.id}', event); openModal(DATA.find(x=>x.id==='${d.id}'));">
-          ${isFav ? '★' : '☆'}
-        </button>
-      </div>
+      <div class="modal-season">${d.temporada} • ${d.deporte || 'Deporte'}</div>
       <h2 class="modal-team">${d.equipo}</h2>
       <div class="modal-club">${d.club !== d.equipo ? d.club : ''}</div>
 
       <div class="modal-grid-details">
         <div class="modal-detail-item">
           <span class="modal-detail-label">Nombre / Jugador</span>
-          <span class="modal-detail-val">${d.nombre || '—'}</span>
+          <span class="modal-detail-val">${cleanJerseyText(d.nombre) || '—'}</span>
         </div>
         <div class="modal-detail-item">
           <span class="modal-detail-label">Dorsal</span>
-          <span class="modal-detail-val">${d.numero ? '#' + d.numero : '—'}</span>
+          <span class="modal-detail-val">${cleanJerseyText(d.numero) ? '#' + cleanJerseyText(d.numero) : '—'}</span>
         </div>
         <div class="modal-detail-item">
           <span class="modal-detail-label">País</span>
@@ -1703,6 +2215,7 @@
       renderRankCard(container, 'Top Marcas', items, 'marca', 8);
       renderRankCard(container, 'Distribución por Países', items, 'pais', 8);
       renderRankCard(container, 'Épocas / Temporadas', items, 'temporada', 8);
+      renderRankCard(container, 'Ediciones', items, 'edicion', 8);
       renderRankCard(container, 'Deportes', items, 'deporte', 6);
       renderRankCard(container, 'Tipos de Equipación', items, 'tipo', 6);
     }
