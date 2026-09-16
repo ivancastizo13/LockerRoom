@@ -2035,14 +2035,25 @@
       });
 
       const sort = document.getElementById('sortSelect').value;
+      // list.sort((a, b) => {
+      //   if (sort === 'rawid-desc') return b.rawId - a.rawId;
+      //   if (sort === 'temporada-desc') return b.temporada.localeCompare(a.temporada);
+      //   if (sort === 'temporada-asc') return a.temporada.localeCompare(b.temporada);
+      //   if (sort === 'equipo-asc') return a.equipo.localeCompare(b.equipo);
+      //   if (sort === 'equipo-desc') return b.equipo.localeCompare(a.equipo);
+      //   if (sort === 'numero-asc') return (parseInt(a.numero, 10) || 999) - (parseInt(b.numero, 10) || 999);
+      //   if (sort === 'numero-desc') return (parseInt(b.numero, 10) || 0) - (parseInt(a.numero, 10) || 0);
+      //   return 0;
+      // });
+
       list.sort((a, b) => {
-        if (sort === 'rawid-desc') return b.rawId - a.rawId;
-        if (sort === 'temporada-desc') return b.temporada.localeCompare(a.temporada);
-        if (sort === 'temporada-asc') return a.temporada.localeCompare(b.temporada);
-        if (sort === 'equipo-asc') return a.equipo.localeCompare(b.equipo);
-        if (sort === 'equipo-desc') return b.equipo.localeCompare(a.equipo);
-        if (sort === 'numero-asc') return (parseInt(a.numero, 10) || 999) - (parseInt(b.numero, 10) || 999);
-        if (sort === 'numero-desc') return (parseInt(b.numero, 10) || 0) - (parseInt(a.numero, 10) || 0);
+        if (sort === "rawid-desc") return b.rawId - a.rawId;
+        if (sort === "temporada-desc") return b.temporada.localeCompare(a.temporada) || b.rawId - a.rawId;  
+        if (sort === "temporada-asc") return a.temporada.localeCompare(b.temporada) || b.rawId - a.rawId;  
+        if (sort === "equipo-asc") return a.equipo.localeCompare(b.equipo) || b.rawId - a.rawId;  
+        if (sort === "equipo-desc") return b.equipo.localeCompare(a.equipo) || b.rawId - a.rawId;  
+        if (sort === "numero-asc") return ((parseInt(a.numero, 10) || 999) - (parseInt(b.numero, 10) || 999) || b.rawId - a.rawId);  
+        if (sort === "numero-desc") return ((parseInt(b.numero, 10) || 0) - (parseInt(a.numero, 10) || 0) || b.rawId - a.rawId);  
         return 0;
       });
 
