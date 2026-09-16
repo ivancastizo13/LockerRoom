@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,364 +10,349 @@
 
     :root {
       --bg-main: #070a11;
-      --bg-card: rgba(19, 28, 46, 0.7);
-      --bg-card-hover: rgba(26, 38, 61, 0.9);
-      --bg-glass: rgba(11, 17, 29, 0.85);
+      --bg-panel: rgba(12, 18, 31, 0.82);
+      --bg-card: rgba(19, 28, 46, 0.72);
+      --bg-card-hover: rgba(25, 37, 60, 0.92);
+      --bg-glass: rgba(8, 13, 24, 0.9);
       --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(56, 189, 248, 0.5);
+      --border-strong: rgba(255, 255, 255, 0.13);
+      --border-hover: rgba(56, 189, 248, 0.48);
       --text-main: #f8fafc;
       --text-soft: #94a3b8;
       --text-muted: #64748b;
       --accent: #38bdf8;
       --accent-gold: #fbbf24;
-      --accent-glow: rgba(56, 189, 248, 0.18);
+      --accent-glow: rgba(56, 189, 248, 0.16);
       --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
       --gold-gradient: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-      --radius-sm: 8px;
-      --radius-md: 14px;
+      --radius-sm: 9px;
+      --radius-md: 16px;
       --radius-lg: 24px;
+      --shadow-card: 0 18px 44px rgba(0, 0, 0, 0.3);
+      --content-width: 1440px;
     }
 
-    * {
+    *,
+    *::before,
+    *::after {
       box-sizing: border-box;
     }
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      color-scheme: dark;
-      forced-color-adjust: none;
+    html {
+      min-height: 100%;
+      scroll-behavior: smooth;
     }
 
     body {
-      background: var(--bg-main);
+      min-height: 100vh;
+      margin: 0;
       color: var(--text-main);
       font-family: 'Outfit', sans-serif;
-      line-height: 1.6;
       font-size: 15px;
-      -webkit-font-smoothing: antialiased;
-      background-image:
-        radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.05) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(129, 140, 248, 0.05) 0px, transparent 50%);
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.065), transparent 34%),
+        radial-gradient(circle at 100% 100%, rgba(129, 140, 248, 0.06), transparent 34%),
+        var(--bg-main);
       background-attachment: fixed;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* Header */
-    /* Header Rediseñado - El Vestuario de Castizo */
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button,
+    select {
+      -webkit-tap-highlight-color: transparent;
+    }
+
     header {
       position: relative;
-      border-bottom: 1px solid var(--border);
-      padding: 90px 0 70px;
-      text-align: center;
       overflow: hidden;
-      background: radial-gradient(circle at 50% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+      padding: 86px 0 60px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 16%, rgba(56, 189, 248, 0.1), transparent 44%),
+        radial-gradient(circle at 50% 100%, rgba(129, 140, 248, 0.035), transparent 45%);
     }
 
     header::before {
-      content: "";
+      content: '';
       position: absolute;
-      top: -120px;
+      top: -145px;
       left: 50%;
+      width: min(760px, 90vw);
+      height: 390px;
       transform: translateX(-50%);
-      width: 700px;
-      height: 350px;
-      background: radial-gradient(circle, var(--accent) 0%, rgba(129, 140, 248, 0.4) 50%, transparent 80%);
-      filter: blur(100px);
-      opacity: 0.2;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.35) 0%, rgba(129, 140, 248, 0.13) 38%, transparent 72%);
+      filter: blur(80px);
+      opacity: 0.52;
       pointer-events: none;
     }
 
     .header-inner {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 24px;
       position: relative;
       z-index: 1;
-    }
-
-    .badge-top {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      color: #fff;
-      background: rgba(15, 23, 42, 0.8);
-      padding: 8px 20px;
-      border-radius: 30px;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      margin-bottom: 28px;
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
-      backdrop-filter: blur(10px);
-    }
-
-    .badge-dot {
-      width: 7px;
-      height: 7px;
-      background: var(--accent);
-      border-radius: 50%;
-      box-shadow: 0 0 10px var(--accent);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% {
-        opacity: 0.4;
-        transform: scale(0.9);
-      }
-
-      50% {
-        opacity: 1;
-        transform: scale(1.3);
-      }
-
-      100% {
-        opacity: 0.4;
-        transform: scale(0.9);
-      }
+      width: min(920px, calc(100% - 40px));
+      margin: 0 auto;
     }
 
     h1 {
+      margin: 0 0 14px;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 68px;
+      font-size: clamp(42px, 6.3vw, 72px);
       font-weight: 700;
-      margin: 0 0 18px;
+      line-height: 0.98;
       letter-spacing: -3px;
-      background: linear-gradient(180deg, #ffffff 30%, #94a3b8 100%);
+      background: linear-gradient(180deg, #FFFFFF 24%, #a8b4c7 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-      line-height: 1;
-      text-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-shadow: 0 16px 32px rgba(0, 0, 0, 0.44);
     }
 
     .brand-castizo {
+      display: inline-block;
+      padding-right: 6px;
+      font-style: italic;
       background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #fbbf24 100%);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-style: italic;
-      padding-right: 6px;
-    }
-
-    .tagline {
-      font-size: 24px;
-      color: var(--accent);
-      margin: 0 0 20px;
-      font-weight: 500;
-      letter-spacing: -0.5px;
     }
 
     .description {
-      font-size: 16px;
+      max-width: 780px;
+      margin: 0 auto 14px;
       color: var(--text-soft);
-      line-height: 1.8;
-      max-width: 720px;
-      margin: 0 auto 44px;
+      font-size: 17px;
       font-weight: 300;
+      line-height: 1.7;
     }
 
-    .description strong {
-      color: #fff;
-      font-weight: 500;
+    .description:first-of-type {
+      margin-bottom: 10px;
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 16px;
-      margin-top: 20px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 34px;
     }
 
     .stat-cell {
-      background: rgba(15, 23, 42, 0.65);
-      backdrop-filter: blur(16px);
-      padding: 20px 16px;
+      padding: 19px 14px;
+      border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      background: rgba(15, 23, 42, 0.62);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
+      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
     }
 
     .stat-cell:hover {
-      border-color: var(--accent);
-      transform: translateY(-4px);
-      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.4), 0 0 20px var(--accent-glow);
+      transform: translateY(-3px);
+      border-color: var(--border-hover);
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.28), 0 0 22px var(--accent-glow);
     }
 
     .stat-number {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 32px;
-      font-weight: 700;
-      color: #fff;
       display: block;
-      line-height: 1.1;
+      color: #FFF;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 30px;
+      font-weight: 700;
+      line-height: 1.05;
     }
 
     .stat-label {
-      font-size: 11px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: 600;
-      margin-top: 6px;
       display: block;
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
     }
 
-    /* Controls */
     .controls {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: var(--bg-glass);
+      padding: 13px 0 12px;
       border-bottom: 1px solid var(--border);
-      padding: 16px 0;
-      backdrop-filter: blur(20px);
+      background: rgba(8, 13, 24, 0.87);
+      backdrop-filter: blur(20px) saturate(135%);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
     }
 
     .controls-inner {
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 0 32px;
-      display: flex;
-      gap: 12px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 185px auto;
+      grid-template-areas:
+        "sports search search search"
+        "filters filters sort views";
       align-items: center;
-      flex-wrap: wrap;
+      gap: 10px;
+      width: min(var(--content-width), calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .sports-filter,
+    .view-btns {
+      display: flex;
+      gap: 3px;
+      padding: 4px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(0, 0, 0, 0.32);
     }
 
     .sports-filter {
-      display: flex;
-      gap: 4px;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 4px;
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
+      grid-area: sports;
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
 
-    .sport-btn {
-      font-size: 13px;
-      padding: 7px 16px;
-      border: none;
+    .sports-filter::-webkit-scrollbar {
+      display: none;
+    }
+
+    .sport-btn,
+    .view-btn {
+      min-height: 34px;
+      padding: 7px 13px;
+      border: 0;
+      border-radius: 6px;
       background: transparent;
       color: var(--text-soft);
       cursor: pointer;
-      border-radius: 6px;
-      font-weight: 500;
-      transition: all 0.2s ease;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
 
-    .sport-btn:hover {
-      color: #fff;
+    .sport-btn:hover,
+    .view-btn:hover {
+      color: #FFF;
+    }
+
+    .sport-btn:active,
+    .view-btn:active {
+      transform: scale(0.98);
     }
 
     .sport-btn.active {
       background: var(--accent);
-      color: #070a11;
+      color: #071018;
       font-weight: 700;
-    }
-
-    .sport-btn.fav-tab.active {
-      background: var(--accent-gold);
-      color: #000;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.16);
     }
 
     .search-box {
-      flex: 1;
-      min-width: 220px;
       position: relative;
-    }
-
-    .search-box input {
+      grid-area: search;
+      min-width: 0;
       width: 100%;
-      padding: 10px 14px 10px 38px;
-      border: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.35);
-      border-radius: var(--radius-sm);
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      color: var(--text-main);
-      transition: all 0.2s ease;
     }
 
     .search-box::before {
-      content: "🔍";
+      content: '⌕';
       position: absolute;
-      left: 12px;
       top: 50%;
+      left: 13px;
+      z-index: 1;
       transform: translateY(-50%);
-      font-size: 12px;
-      opacity: 0.5;
+      color: var(--text-muted);
+      font-size: 19px;
+      line-height: 1;
+      pointer-events: none;
     }
 
-    .search-box input:focus {
+    .search-box input,
+    .filter-group select,
+    .sort-select {
+      width: 100%;
+      min-height: 38px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
       outline: none;
+      background: #0d1321;
+      color: var(--text-main);
+      font-size: 13px;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .search-box input {
+      padding-left: 38px;
+      background: rgba(0, 0, 0, 0.32);
+    }
+
+    .search-box input::placeholder {
+      color: #64748b;
+    }
+
+    .search-box input:focus,
+    .filter-group select:focus,
+    .sort-select:focus {
       border-color: var(--accent);
-      background: rgba(0, 0, 0, 0.6);
-      box-shadow: 0 0 16px var(--accent-glow);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.08), 0 0 16px var(--accent-glow);
     }
 
     .filter-group {
-      display: flex;
+      grid-area: filters;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 8px;
-      flex-wrap: wrap;
+      width: 100%;
+      min-width: 0;
     }
 
-    .filter-group select,
+    .filter-group select {
+      width: 100%;
+      min-width: 0;
+    }
+
     .sort-select {
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      background: #0d1321;
-      border-radius: var(--radius-sm);
-      font-family: 'Outfit', sans-serif;
-      font-size: 13px;
-      color: var(--text-main);
-      cursor: pointer;
-      transition: border-color 0.2s ease;
-    }
-
-    .filter-group select:focus,
-    .sort-select:focus {
-      outline: none;
-      border-color: var(--accent);
+      grid-area: sort;
+      width: 100%;
+      min-width: 0;
     }
 
     .view-btns {
-      display: flex;
-      background: rgba(0, 0, 0, 0.35);
-      padding: 4px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      margin-left: auto;
-    }
-
-    .view-btn {
-      padding: 7px 16px;
-      border: none;
-      background: transparent;
-      color: var(--text-soft);
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 500;
-      border-radius: 6px;
-      transition: all 0.2s;
+      grid-area: views;
+      min-width: 0;
     }
 
     .view-btn.active {
       background: rgba(255, 255, 255, 0.12);
-      color: #fff;
+      color: #FFF;
     }
 
-    /* Filter Chips Bar */
     .active-filters-bar {
-      max-width: 1440px;
-      margin: 12px auto 0;
-      padding: 0 32px;
       display: flex;
-      align-items: center;
-      gap: 10px;
       flex-wrap: wrap;
+      align-items: center;
+      gap: 7px;
+      width: min(var(--content-width), calc(100% - 48px));
+      margin: 10px auto 0;
     }
 
     .active-filters-bar:empty {
@@ -376,216 +360,204 @@
     }
 
     .filter-chip {
-      font-size: 12px;
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--accent);
-      padding: 4px 10px;
-      border-radius: 20px;
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      padding: 5px 10px;
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.11);
+      color: var(--accent);
       cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
     }
 
     .filter-chip:hover {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(239, 68, 68, 0.4);
+      border-color: rgba(239, 68, 68, 0.42);
+      background: rgba(239, 68, 68, 0.16);
       color: #fca5a5;
     }
 
     .clear-all-btn {
-      font-size: 12px;
-      color: var(--text-muted);
-      background: none;
-      border: none;
-      cursor: pointer;
-      text-decoration: underline;
       padding: 4px;
+      border: 0;
+      background: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 11px;
+      text-decoration: underline;
     }
 
     .clear-all-btn:hover {
-      color: #fff;
+      color: #FFF;
     }
 
     .results-count {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 24px;
-      margin-bottom: 12px;
-      max-width: 1440px;
-      margin-left: auto;
-      margin-right: auto;
-      padding: 0 32px;
-      font-family: 'Space Mono', monospace;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      width: min(var(--content-width), calc(100% - 48px));
+      margin: 22px auto 10px;
+      color: var(--text-muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+    }
+
+    #favsCounter {
+      color: var(--accent-gold) !important;
     }
 
     .content {
-      max-width: 1440px;
+      width: min(var(--content-width), calc(100% - 48px));
       margin: 0 auto;
-      padding: 0 32px 100px;
+      padding-bottom: 90px;
+    }
+
+    .loading,
+    .empty-state {
+      padding: 92px 20px;
+      color: var(--text-soft);
+      text-align: center;
     }
 
     .loading {
-      text-align: center;
-      padding: 100px 20px;
       color: var(--accent);
-      font-size: 16px;
       font-family: 'Space Mono', monospace;
+      font-size: 14px;
     }
 
     .error-state {
       display: none;
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      padding: 32px;
-      text-align: center;
-      color: #fca5a5;
-      border-radius: var(--radius-md);
+      max-width: 650px;
       margin: 40px auto;
-      max-width: 600px;
+      padding: 28px;
+      border: 1px solid rgba(239, 68, 68, 0.28);
+      border-radius: var(--radius-md);
+      background: rgba(239, 68, 68, 0.08);
+      color: #fca5a5;
+      text-align: center;
     }
 
     .error-state.show {
       display: block;
     }
 
-    /* Galería 3D */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 28px;
-      margin-top: 10px;
-      perspective: 1000px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      margin-top: 8px;
     }
 
     .card {
-      background: var(--bg-card);
-      backdrop-filter: blur(12px);
+      position: relative;
+      display: flex;
+      min-width: 0;
+      flex-direction: column;
+      overflow: hidden;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      overflow: hidden;
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
       cursor: pointer;
-      position: relative;
-      transform-style: preserve-3d;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.16);
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.24s ease, background 0.24s ease, box-shadow 0.24s ease;
     }
 
     .card:hover {
-      /*transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);*/
+      transform: translateY(-5px);
       border-color: var(--border-hover);
-      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 0 30px var(--accent-glow);
       background: var(--bg-card-hover);
-    }
-
-    .card-fav-btn {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      z-index: 10;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      color: rgba(255, 255, 255, 0.4);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .card-fav-btn:hover,
-    .card-fav-btn.active {
-      color: var(--accent-gold);
-      background: rgba(0, 0, 0, 0.8);
-      border-color: rgba(251, 191, 36, 0.5);
-      transform: scale(1.1);
+      box-shadow: var(--shadow-card), 0 0 26px var(--accent-glow);
     }
 
     .card-image {
-      width: 100%;
-      aspect-ratio: 1;
-      background: radial-gradient(circle at 50% 50%, #172033 0%, #0b111d 100%);
+      position: relative;
       display: flex;
+      width: 100%;
+      aspect-ratio: 1 / 0.98;
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      position: relative;
       border-bottom: 1px solid var(--border);
+      /* background: radial-gradient(circle at 50% 45%, #FFFFFF 0%, #fbfbfb 64%, #f4f4f4 100%); */
+      background: radial-gradient(circle at 50% 45%, #FFFFFF 0%, #FFFFFF 64%, #FFFFFF 100%);
+    }
+
+    .card-image::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, transparent 72%, rgba(0, 0, 0, 0.05));
+      pointer-events: none;
     }
 
     .card-image img {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .card:hover .card-image img {
-      transform: scale(1.08);
+      transform: scale(1.045);
     }
 
     .card-image svg {
       width: 78%;
       height: 78%;
-      filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.44));
     }
 
     .card-content {
-      padding: 22px;
-      flex: 1;
       display: flex;
+      flex: 1;
       flex-direction: column;
+      padding: 18px;
     }
 
     .card-season {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
+      margin-bottom: 5px;
       color: var(--accent);
-      margin-bottom: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1.25px;
+      text-transform: uppercase;
     }
 
     .card-team {
+      margin: 0 0 3px;
+      color: #FFF;
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 21px;
+      font-size: 20px;
       font-weight: 700;
-      margin: 0 0 4px;
-      line-height: 1.25;
-      color: #fff;
+      line-height: 1.16;
     }
 
     .card-club {
-      font-size: 13px;
+      min-height: 20px;
+      margin-bottom: 12px;
       color: var(--text-soft);
-      margin-bottom: 14px;
+      font-size: 12px;
     }
 
-    /* REGLA SOLICITADA: Solo mostrar Nombre cuando tenga nombre O dorsal */
     .card-meta {
-      font-size: 13px;
-      margin-bottom: 14px;
-      color: var(--text-main);
-      background: rgba(0, 0, 0, 0.35);
-      padding: 10px 14px;
-      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      padding: 9px 11px;
       border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-sm);
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--text-main);
+      font-size: 12px;
     }
 
     .meta-row {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 4px;
+      gap: 10px;
+      margin-bottom: 3px;
     }
 
     .meta-row:last-child {
@@ -594,40 +566,44 @@
 
     .meta-label {
       color: var(--text-muted);
-      font-size: 12px;
+      font-size: 11px;
     }
 
     .meta-val {
+      max-width: 66%;
+      color: #FFF;
       font-weight: 600;
-      color: #fff;
+      overflow-wrap: anywhere;
+      text-align: right;
     }
 
     .card-details {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 5px;
       margin-top: auto;
     }
 
     .detail-tag {
-      font-size: 11px;
-      padding: 4px 11px;
-      border-radius: 20px;
+      padding: 4px 9px;
       border: 1px solid var(--border);
+      border-radius: 999px;
       color: var(--text-main);
-      font-weight: 500;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.2;
     }
 
     .card-notes {
-      margin-top: 14px;
-      padding: 12px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
-      font-size: 12px;
-      color: var(--text-soft);
-      line-height: 1.5;
       display: none;
+      margin-top: 12px;
+      padding: 11px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(0, 0, 0, 0.35);
+      color: var(--text-soft);
+      font-size: 11px;
+      line-height: 1.5;
     }
 
     .card.expanded .card-notes {
@@ -635,34 +611,30 @@
     }
 
     .card-toggle {
+      margin-top: 10px;
+      padding: 0;
+      border: 0;
       background: none;
-      border: none;
       color: var(--accent);
       cursor: pointer;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 600;
-      padding: 0;
-      margin-top: 12px;
       text-align: left;
     }
 
-    /* Modal Pop-up */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(4, 7, 13, 0.88);
-      backdrop-filter: blur(16px);
+      inset: 0;
       z-index: 1000;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      background: rgba(4, 7, 13, 0.88);
+      backdrop-filter: blur(16px);
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.3s ease;
+      transition: opacity 0.24s ease;
     }
 
     .modal-overlay.active {
@@ -671,168 +643,157 @@
     }
 
     .modal-container {
-      background: #0d1424;
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      max-height: 90vh;
+      overflow: auto;
       border: 1px solid var(--border-hover);
       border-radius: var(--radius-lg);
-      max-width: 860px;
-      width: 100%;
-      max-height: 90vh;
-      overflow-y: auto;
-      position: relative;
-      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.8), 0 0 40px var(--accent-glow);
-      transform: scale(0.94);
-      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background: #0d1424;
+      box-shadow: 0 34px 70px rgba(0, 0, 0, 0.82), 0 0 44px var(--accent-glow);
+      transform: translateY(10px) scale(0.985);
+      transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+      scrollbar-width: thin;
     }
 
     .modal-overlay.active .modal-container {
-      transform: scale(1);
+      transform: translateY(0) scale(1);
     }
 
     .modal-close {
       position: absolute;
-      top: 18px;
-      right: 18px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid var(--border);
-      border-radius: 50%;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+      display: flex;
       width: 38px;
       height: 38px;
-      display: flex;
       align-items: center;
       justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFF;
       cursor: pointer;
-      font-size: 18px;
-      color: #fff;
-      z-index: 10;
-      transition: all 0.2s;
+      font-size: 19px;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
     }
 
     .modal-close:hover {
       background: var(--accent);
       color: #000;
+      transform: scale(1.04);
     }
 
     .modal-body {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
     .modal-image-col {
-      background: radial-gradient(circle at 50% 50%, #172033 0%, #070a11 100%);
+      position: relative;
       display: flex;
+      min-height: 430px;
       align-items: center;
       justify-content: center;
-      padding: 40px;
-      min-height: 400px;
-      position: relative;
+      padding: 34px;
+      /* background: radial-gradient(circle at 50% 50%, #FFFFFF 0%, #f8f8f8 100%); */
+      background: radial-gradient(circle at 50% 50%, #FFFFFF 0%, #FFFFFF 100%);
       cursor: zoom-in;
-    }
-
-    /* Favorito dentro de la imagen del detalle, separado del botón de cierre del modal */
-    .modal-image-fav {
-      position: absolute;
-      top: 18px;
-      right: 18px;
-      z-index: 12;
-      margin: 0;
-    }
-
-    .modal-image-fav:hover,
-    .modal-image-fav.active {
-      transform: scale(1.08);
     }
 
     .modal-image-col img {
       width: 100%;
-      max-height: 440px;
+      max-height: 450px;
       object-fit: contain;
-      transition: transform 0.3s ease;
     }
 
     .modal-image-col svg {
       width: 100%;
-      max-height: 340px;
+      max-height: 350px;
     }
 
     .modal-info-col {
-      padding: 44px 36px;
       display: flex;
+      min-width: 0;
       flex-direction: column;
+      padding: 42px 34px 34px;
     }
 
     .modal-season {
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
+      margin-bottom: 7px;
       color: var(--accent);
-      margin-bottom: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 1.8px;
+      text-transform: uppercase;
     }
 
     .modal-team {
+      margin: 0 0 4px;
+      color: #FFF;
       font-family: 'Space Grotesk', sans-serif;
       font-size: 34px;
       font-weight: 700;
       line-height: 1.1;
-      margin: 0 0 6px;
-      color: #fff;
     }
 
     .modal-club {
-      font-size: 15px;
+      min-height: 24px;
+      margin-bottom: 24px;
       color: var(--text-soft);
-      margin-bottom: 28px;
+      font-size: 14px;
     }
 
     .modal-grid-details {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
-      margin-bottom: 28px;
-      padding-bottom: 24px;
+      margin-bottom: 25px;
+      padding-bottom: 22px;
       border-bottom: 1px solid var(--border);
     }
 
     .modal-detail-item {
+      min-width: 0;
       font-size: 13px;
     }
 
     .modal-detail-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      letter-spacing: 0.5px;
       display: block;
       margin-bottom: 3px;
+      color: var(--text-muted);
+      font-size: 10px;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
     }
 
     .modal-detail-val {
+      color: #FFF;
       font-weight: 600;
-      color: #fff;
+      overflow-wrap: anywhere;
     }
 
     .modal-notes {
-      background: rgba(0, 0, 0, 0.4);
+      padding: 17px;
       border: 1px solid var(--border);
-      padding: 18px;
       border-radius: var(--radius-sm);
-      font-size: 13px;
+      background: rgba(0, 0, 0, 0.36);
       color: var(--text-soft);
+      font-size: 12px;
       line-height: 1.6;
     }
 
-    /* Lightbox Fullscreen */
     .lightbox {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.95);
+      inset: 0;
       z-index: 2000;
       display: none;
       align-items: center;
       justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.96);
       cursor: zoom-out;
     }
 
@@ -841,19 +802,20 @@
     }
 
     .lightbox img {
-      max-width: 90%;
-      max-height: 90%;
+      max-width: 94vw;
+      max-height: 94vh;
       object-fit: contain;
     }
 
-    /* Tabla */
     .table-view {
       display: none;
-      margin-top: 20px;
+      margin-top: 18px;
       overflow-x: auto;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       background: var(--bg-card);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+      scrollbar-width: thin;
     }
 
     .table-view.active {
@@ -862,43 +824,45 @@
 
     table {
       width: 100%;
+      min-width: 980px;
       border-collapse: collapse;
-      font-size: 13.5px;
+      font-size: 13px;
     }
 
     thead {
       border-bottom: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.42);
     }
 
     th {
-      text-align: left;
-      padding: 16px 18px;
-      font-weight: 600;
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      padding: 14px 16px;
       color: var(--text-soft);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-align: left;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
     td {
-      padding: 14px 18px;
+      padding: 13px 16px;
       border-bottom: 1px solid var(--border);
+      white-space: nowrap;
     }
 
     tbody tr {
       cursor: pointer;
-      transition: background 0.15s;
+      transition: background 0.15s ease;
     }
 
     tbody tr:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.04);
     }
 
-    /* Totales / Análisis */
     .totales-view {
       display: none;
-      margin-top: 20px;
+      margin-top: 18px;
     }
 
     .totales-view.active {
@@ -907,203 +871,244 @@
 
     .rank-cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 18px;
     }
 
     .rank-card {
-      background: var(--bg-card);
-      backdrop-filter: blur(12px);
+      padding: 22px;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      padding: 26px;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
     }
 
     .rank-title {
-      font-family: 'Space Mono', monospace;
-      font-size: 12px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--accent);
-      margin: 0 0 20px;
-      padding-bottom: 12px;
+      margin: 0 0 18px;
+      padding-bottom: 11px;
       border-bottom: 1px solid var(--border);
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.35px;
+      text-transform: uppercase;
     }
 
     .rank-item {
       display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
       align-items: center;
+      gap: 11px;
+      margin-bottom: 14px;
     }
 
     .rank-badge {
-      font-family: 'Space Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
+      display: flex;
       width: 26px;
       height: 26px;
-      display: flex;
+      flex: 0 0 26px;
       align-items: center;
       justify-content: center;
       border: 1px solid var(--border);
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.04);
       color: var(--text-soft);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
     }
 
     .rank-info {
       flex: 1;
+      min-width: 0;
     }
 
     .rank-name {
       display: flex;
       justify-content: space-between;
       gap: 8px;
-      font-size: 13px;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
+      color: #FFF;
+      font-size: 12px;
+    }
+
+    .rank-name > span:first-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .rank-bar {
       height: 6px;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 3px;
       overflow: hidden;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.46);
     }
 
     .rank-fill {
       height: 100%;
+      border-radius: inherit;
       background: var(--accent-gradient);
-      border-radius: 3px;
-    }
-
-    .empty-state {
-      display: none;
-      text-align: center;
-      padding: 100px 20px;
-      color: var(--text-soft);
-    }
-
-    .empty-state.show {
-      display: block;
     }
 
     footer {
-      text-align: center;
-      font-size: 12px;
-      color: var(--text-muted);
-      padding: 40px 32px;
+      margin-top: 70px;
+      padding: 34px 24px;
       border-top: 1px solid var(--border);
-      margin-top: 80px;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-align: center;
     }
 
-    /* Responsive mejorado: tablet, móvil y pantallas muy pequeñas */
+    footer p {
+      margin: 0;
+    }
+
+
+    @media (min-width: 1201px) {
+      .controls-inner {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 205px auto;
+      }
+
+      .filter-group {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1200px) and (min-width: 821px) {
+      .controls-inner {
+        grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) 190px auto;
+        gap: 9px;
+      }
+
+      .filter-group {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
     @media (max-width: 1024px) {
       header {
-        padding: 72px 0 54px;
+        padding: 72px 0 52px;
       }
 
       .header-inner {
-        max-width: 820px;
-      }
-
-      h1 {
-        font-size: clamp(48px, 7vw, 64px);
+        width: min(820px, calc(100% - 36px));
       }
 
       .controls-inner,
       .active-filters-bar,
       .results-count,
       .content {
-        padding-left: 22px;
-        padding-right: 22px;
+        width: calc(100% - 36px);
       }
 
       .gallery {
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 20px;
+        gap: 18px;
       }
 
       .card-content {
-        padding: 18px;
+        padding: 16px;
       }
 
       .card-team {
         font-size: 18px;
       }
+
+      .modal-body {
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      }
+
+      .modal-image-col {
+        min-height: 390px;
+      }
+    }
+
+    @media (max-width: 820px) {
+      .controls-inner {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "sports"
+          "search"
+          "sort"
+          "views"
+          "filters";
+        align-items: stretch;
+      }
+
+      .sports-filter,
+      .search-box,
+      .sort-select,
+      .view-btns {
+        width: 100%;
+      }
+
+      .filter-group {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .view-btns {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-left: 0;
+      }
+
+      .view-btn {
+        width: 100%;
+      }
     }
 
     @media (max-width: 768px) {
-      body {
-        overflow-x: hidden;
-      }
-
       header {
-        padding: 52px 0 34px;
+        padding: 54px 0 38px;
       }
 
       .header-inner {
-        padding: 0 18px;
+        width: calc(100% - 30px);
       }
 
       h1 {
-        font-size: clamp(34px, 10vw, 48px);
+        font-size: clamp(34px, 10vw, 50px);
         letter-spacing: -1.8px;
-        margin-bottom: 14px;
       }
 
       .description {
         font-size: 14px;
         line-height: 1.65;
-        margin-bottom: 28px;
       }
 
       .stats-row {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 10px;
+        gap: 9px;
+        margin-top: 26px;
       }
 
       .stat-cell {
-        padding: 15px 10px;
+        padding: 14px 10px;
       }
 
       .stat-number {
-        font-size: 25px;
+        font-size: 24px;
       }
 
       .controls {
         padding: 10px 0;
       }
 
-      .controls-inner {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 9px;
-        padding: 0 14px;
+      .controls-inner,
+      .active-filters-bar,
+      .results-count,
+      .content {
+        width: calc(100% - 28px);
       }
 
       .sports-filter {
-        width: 100%;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
+        padding: 3px;
       }
 
-      .sports-filter::-webkit-scrollbar {
-        display: none;
-      }
-
-      .sport-btn {
-        flex: 0 0 auto;
-        white-space: nowrap;
+      .sport-btn,
+      .view-btn {
         min-height: 38px;
-        padding: 8px 13px;
-      }
-
-      .search-box {
-        width: 100%;
-        min-width: 0;
+        padding: 8px 12px;
       }
 
       .search-box input,
@@ -1113,49 +1118,18 @@
         font-size: 14px;
       }
 
-      .filter-group {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-      }
-
       .filter-group select {
         width: 100%;
         min-width: 0;
       }
 
-      .sort-select {
-        width: 100%;
-      }
-
-      .view-btns {
-        margin-left: 0;
-        width: 100%;
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .view-btn {
-        min-height: 40px;
-        padding: 7px 8px;
-      }
-
-      .active-filters-bar,
-      .results-count,
-      .content {
-        padding-left: 14px;
-        padding-right: 14px;
-      }
-
       .active-filters-bar {
         margin-top: 8px;
-        gap: 7px;
       }
 
       .results-count {
-        margin-top: 16px;
-        margin-bottom: 8px;
-        font-size: 11px;
+        margin-top: 15px;
+        font-size: 10px;
       }
 
       .gallery {
@@ -1163,12 +1137,8 @@
         gap: 12px;
       }
 
-      .card {
-        min-width: 0;
-      }
-
       .card-content {
-        padding: 13px;
+        padding: 12px;
       }
 
       .card-season {
@@ -1178,70 +1148,47 @@
 
       .card-team {
         font-size: 16px;
-        line-height: 1.18;
       }
 
       .card-club {
-        font-size: 11px;
-        margin-bottom: 10px;
+        font-size: 10px;
+        margin-bottom: 9px;
       }
 
       .card-meta {
         padding: 8px 9px;
-        font-size: 11px;
-        margin-bottom: 10px;
-      }
-
-      .meta-row {
-        gap: 6px;
-      }
-
-      .meta-label {
         font-size: 10px;
       }
 
-      .meta-val {
-        text-align: right;
-        overflow-wrap: anywhere;
+      .meta-label {
+        font-size: 9px;
       }
 
-      .card-details {
-        gap: 4px;
+      .meta-val {
+        max-width: 62%;
       }
 
       .detail-tag {
-        font-size: 9px;
         padding: 3px 7px;
-      }
-
-      .card-fav-btn {
-        top: 8px;
-        right: 8px;
-        width: 30px;
-        height: 30px;
-        font-size: 14px;
+        font-size: 8.5px;
       }
 
       .card-toggle {
         font-size: 10px;
-        margin-top: 9px;
       }
 
       .table-view {
         margin-top: 12px;
-        border-radius: 10px;
+        border-radius: 11px;
       }
 
       table {
-        min-width: 920px;
+        min-width: 940px;
       }
 
-      th {
-        padding: 12px 14px;
-      }
-
+      th,
       td {
-        padding: 12px 14px;
+        padding: 11px 13px;
       }
 
       .modal-overlay {
@@ -1253,10 +1200,10 @@
         width: 100%;
         max-width: none;
         max-height: 94vh;
-        border-radius: 22px 22px 0 0;
-        border-left: 0;
         border-right: 0;
         border-bottom: 0;
+        border-left: 0;
+        border-radius: 22px 22px 0 0;
       }
 
       .modal-body {
@@ -1265,20 +1212,20 @@
 
       .modal-image-col {
         min-height: 240px;
-        max-height: 42vh;
-        padding: 24px;
+        max-height: 41vh;
+        padding: 22px;
       }
 
       .modal-image-col img {
-        max-height: 34vh;
+        max-height: 32vh;
       }
 
       .modal-image-col svg {
-        max-height: 230px;
+        max-height: 220px;
       }
 
       .modal-info-col {
-        padding: 28px 20px 30px;
+        padding: 26px 18px 28px;
       }
 
       .modal-team {
@@ -1290,20 +1237,88 @@
       }
 
       .modal-close {
-        top: 10px;
-        right: 10px;
+        top: 9px;
+        right: 9px;
         width: 36px;
         height: 36px;
       }
 
-      .modal-image-fav {
-        top: 12px;
-        right: 12px;
+      .rank-cards {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .rank-card {
+        padding: 18px;
       }
 
       footer {
-        padding: 28px 18px;
         margin-top: 50px;
+        padding: 28px 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .controls-inner,
+      .active-filters-bar,
+      .results-count,
+      .content {
+        width: calc(100% - 20px);
+      }
+
+      .header-inner {
+        width: calc(100% - 22px);
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .description:first-of-type {
+        font-size: 10px;
+        letter-spacing: 1.5px;
+      }
+
+      .description {
+        font-size: 13px;
+      }
+
+      .gallery {
+        gap: 10px;
+      }
+
+      .card {
+        border-radius: 13px;
+      }
+
+      .card-image {
+        aspect-ratio: 1 / 1.02;
+      }
+
+      .card-content {
+        padding: 11px;
+      }
+
+      .card-team {
+        font-size: 15px;
+      }
+
+      .card-meta {
+        margin-bottom: 9px;
+      }
+
+      .filter-group {
+        gap: 6px;
+      }
+
+      .view-btn {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .filter-group {
+        grid-template-columns: 1fr;
       }
     }
 
@@ -1317,7 +1332,7 @@
       }
 
       .card-image {
-        aspect-ratio: 1.08;
+        aspect-ratio: 1.08 / 1;
       }
 
       .card-team {
@@ -1327,23 +1342,31 @@
 
     @media (max-width: 340px) {
       h1 {
-        font-size: 32px;
+        font-size: 31px;
       }
 
       .stats-row {
-        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+      }
+
+      .stat-number {
+        font-size: 22px;
       }
 
       .view-btn {
-        font-size: 11px;
+        padding-inline: 6px;
+        font-size: 10px;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
       *,
       *::before,
       *::after {
-        scroll-behavior: auto !important;
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
@@ -1351,9 +1374,7 @@
     }
   </style>
 </head>
-
 <body>
-
   <header>
     <div class="header-inner">
       <h1><span class="brand-castizo">El Vestuario de Castizo</span></h1>
@@ -1361,26 +1382,26 @@
       <p class="description">
         Más de una década reuniendo camisetas de equipos históricos y actuales. Desde clásicos de los años 80 hasta ediciones especiales contemporáneas.
       </p>
-      <div class="stats-row" id="stats">
-        <!-- Se genera dinámicamente con JS -->
-      </div>
+      <div class="stats-row" id="stats"></div>
     </div>
   </header>
 
   <div class="controls">
     <div class="controls-inner">
       <div class="sports-filter" id="sportsTabs"></div>
-      <div class="search-box"><input type="text" id="search" placeholder="Buscar equipo, jugador, club, año..."></div>
+      <div class="search-box">
+        <input type="text" id="search" placeholder="Buscar equipo, jugador, club, año..." autocomplete="off">
+      </div>
       <div class="filter-group" id="filterGroup"></div>
-
-      <select id="sortSelect" class="sort-select">
+      <select id="sortSelect" class="sort-select" aria-label="Ordenar colección">
+        <option value="rawid-desc">Por defecto</option>
         <option value="temporada-desc">Año: Recientes primero</option>
         <option value="temporada-asc">Año: Antiguos primero</option>
         <option value="equipo-asc">Equipo: A - Z</option>
         <option value="equipo-desc">Equipo: Z - A</option>
         <option value="numero-asc">Dorsal: Menor a Mayor</option>
+        <option value="numero-desc">Dorsal: Mayor a Menor</option>
       </select>
-
       <div class="view-btns">
         <button class="view-btn active" data-view="grid">Galería</button>
         <button class="view-btn" data-view="table">Tabla</button>
@@ -1392,13 +1413,14 @@
 
   <div class="results-count">
     <span id="resultsCount">Cargando...</span>
-    <span id="favsCounter" style="color:var(--accent-gold); font-size:12px;">⭐ 0 Favoritas</span>
+    <span id="favsCounter"></span>
   </div>
 
   <div class="content">
     <div class="loading" id="loading">Sincronizando archivo con Google Sheets...</div>
     <div class="error-state" id="errorState"></div>
     <div class="gallery" id="gallery"></div>
+
     <div class="table-view" id="tableView">
       <table>
         <thead>
@@ -1419,24 +1441,26 @@
         <tbody id="tableBody"></tbody>
       </table>
     </div>
+
     <div class="totales-view" id="totalesView">
       <div class="rank-cards" id="rankCards"></div>
     </div>
+
     <div class="empty-state" id="emptyState">
       <p>No se encontraron camisetas con estos criterios.</p>
     </div>
   </div>
 
-  <!-- Modal Pop-up Detalle -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-container">
-      <button class="modal-close" id="modalClose">&times;</button>
+      <button class="modal-close" id="modalClose" aria-label="Cerrar detalle">&times;</button>
       <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
 
-  <!-- Lightbox Fullscreen -->
-  <div class="lightbox" id="lightbox"><img id="lightboxImg" src="" alt="Ampliada"></div>
+  <div class="lightbox" id="lightbox" aria-label="Vista ampliada">
+    <img id="lightboxImg" src="" alt="Ampliada">
+  </div>
 
   <footer>
     <p>Vestuario Pro &copy; 2026 — Sincronización en tiempo real desde Google Sheets API v4.</p>
@@ -1447,13 +1471,31 @@
     const API_KEY = 'AIzaSyCiwQ8FodWyQbH0wxzFUDjhsC99vI58wfY';
 
     const COLS = {
-      temporada: 0, equipo: 1, club: 2, pais: 3, tipo: 4, edicion: 5, marca: 6,
-      color1: 7, color2: 8, numero: 9, nombre: 10, autenticidad: 11, deporte: 12,
-      foto: 13, notas: 14, url: 15, detalleCamiseta: 16
+      temporada: 0,
+      equipo: 1,
+      club: 2,
+      pais: 3,
+      tipo: 4,
+      edicion: 5,
+      marca: 6,
+      color1: 7,
+      color2: 8,
+      numero: 9,
+      nombre: 10,
+      autenticidad: 11,
+      deporte: 12,
+      foto: 13,
+      notas: 14,
+      url: 15,
+      detalleCamiseta: 16
     };
 
-    // La columna de diseño se localiza por nombre para que el SVG no dependa
-    // de que alguien inserte o mueva columnas en Google Sheets.
+    let DATA = [];
+    let currentView = 'grid';
+    let activeSport = '';
+    let showOnlyFavs = false;
+    let favorites = JSON.parse(localStorage.getItem('jersey_favs') || '[]');
+
     function normalizeHeader(value) {
       return String(value || '')
         .normalize('NFD')
@@ -1470,12 +1512,6 @@
       }
       return fallback;
     }
-
-    let DATA = [];
-    let currentView = 'grid';
-    let activeSport = '';
-    let showOnlyFavs = false;
-    let favorites = JSON.parse(localStorage.getItem('jersey_favs') || '[]');
 
     function saveFavorites() {
       localStorage.setItem('jersey_favs', JSON.stringify(favorites));
@@ -1495,7 +1531,9 @@
     }
 
     function updateFavCounter() {
-      document.getElementById('favsCounter').textContent = `⭐ ${favorites.length} Favoritas`;
+      const counter = document.getElementById('favsCounter');
+      if (!counter) return;
+      counter.textContent = favorites.length ? `⭐ ${favorites.length} Favoritas guardadas` : '';
     }
 
     function rgbToHex(rgb) {
@@ -1516,14 +1554,13 @@
       return luminance > 0.5 ? '#070a11' : '#FFFFFF';
     }
 
-    function colorHex(val) {
-      if (!val) return '#FFFFFF';
-      if (typeof val === 'object') val = val.bg || val.color || val.hex || '#FFFFFF';
-      const str = String(val).trim();
+    function colorHex(value) {
+      if (!value) return '#FFFFFF';
+      if (typeof value === 'object') value = value.bg || value.color || value.hex || '#FFFFFF';
 
-      // Acepta HEX, rgb()/rgba() y nombres habituales.
-      const hexMatch = str.match(/#?([0-9A-Fa-f]{6})(?:FF)?$/);
-      if (hexMatch) return '#' + hexMatch[1];
+      const str = String(value).trim();
+      const hexMatch = str.match(/^#?([0-9A-Fa-f]{6})(?:FF)?$/);
+      if (hexMatch) return '#' + hexMatch[1].toUpperCase();
 
       const rgbMatch = str.match(/^rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
       if (rgbMatch) {
@@ -1548,7 +1585,6 @@
       return dict[str.toLowerCase()] || '#DCD5CC';
     }
 
-    // '-' y variantes equivalen a valor vacío en nombre/dorsal.
     function cleanJerseyText(value) {
       const s = String(value ?? '').trim();
       return (!s || /^[-–—]+$/.test(s)) ? '' : s;
@@ -1558,12 +1594,11 @@
       const raw = String(rawValue ?? '').trim();
       if (raw) {
         const parsed = colorHex(raw);
-        // colorHex devuelve el beige de reserva cuando el nombre no está reconocido.
         const normalized = normalizeDetail(raw);
         const knownNames = [
-          'blanco','blanco roto','crema','azul','azul claro','azul marino','azul oscuro','azul real','celeste',
-          'rojo','rojo oscuro','granate','negro','amarillo','amarillo oro','dorado','verde','verde oscuro',
-          'naranja','gris','gris claro','morado','morado oscuro','rosa','rosa fuerte','turquesa','burdeos','violeta'
+          'blanco', 'blanco roto', 'crema', 'azul', 'azul claro', 'azul marino', 'azul oscuro', 'azul real', 'celeste',
+          'rojo', 'rojo oscuro', 'granate', 'negro', 'amarillo', 'amarillo oro', 'dorado', 'verde', 'verde oscuro',
+          'naranja', 'gris', 'gris claro', 'morado', 'morado oscuro', 'rosa', 'rosa fuerte', 'turquesa', 'burdeos', 'violeta'
         ];
         if (/^#?[0-9a-f]{6}$/i.test(raw) || /^rgba?\(/i.test(raw) || knownNames.includes(normalized)) {
           return parsed;
@@ -1572,9 +1607,6 @@
       return colorHex(formattedColor || '#DCD5CC');
     }
 
-
-    // Estimación de superficie del color2 según el patrón de DetalleCamiseta.
-    // Se usa exclusivamente para decidir el color del nombre/dorsal.
     function color2Coverage(detail) {
       const d = normalizeDetail(detail);
       if (/cuadros|damero|checker|cuadriculad|mitad|bicolor|dos colores|dos mitades/.test(d)) return 0.50;
@@ -1595,12 +1627,9 @@
     }
 
     function getJerseyMarkColor(c1, c2, detalleCamiseta) {
-      // Regla solicitada: normalmente color2; si color2 ocupa igual o más
-      // superficie que color1, usar color1 para garantizar contraste.
       return color2Coverage(detalleCamiseta) >= 0.50 ? colorHex(c1) : colorHex(c2);
     }
 
-    /* Ilustraciones Vectoriales Pro: el patrón se decide por DetalleCamiseta. */
     function uniqueSvgId(prefix = 'svg') {
       return `${prefix}-${Math.random().toString(36).slice(2, 10)}`;
     }
@@ -1636,13 +1665,14 @@
       const clipId = `${id}-clip`;
       const parts = [];
 
-      // Más específico primero para evitar colisiones entre "rayas" y "vertical".
       if (/cuadros|damero|checker|cuadriculad/.test(d)) {
         parts.push(`<g clip-path="url(#${clipId})">`);
         const cell = 18;
         for (let y = 10, row = 0; y < 150; y += cell, row++) {
           for (let x = 20, col = 0; x < 180; x += cell, col++) {
-            if ((row + col) % 2 === 1) parts.push(`<rect x="${x}" y="${y}" width="${cell}" height="${cell}" fill="${c2}" opacity="0.95"/>`);
+            if ((row + col) % 2 === 1) {
+              parts.push(`<rect x="${x}" y="${y}" width="${cell}" height="${cell}" fill="${c2}" opacity="0.95"/>`);
+            }
           }
         }
         parts.push('</g>');
@@ -1650,7 +1680,9 @@
         parts.push(`<path d="M100 0 V160 H220 V0 Z" fill="${c2}" clip-path="url(#${clipId})"/>`);
       } else if (/diagonal|banda diagonal|franja diagonal|slash/.test(d)) {
         parts.push(`<path d="M-20 115 L170 -10 L185 18 L-5 145 Z" fill="${c2}" clip-path="url(#${clipId})" opacity="0.95"/>`);
-        if (/doble|dos|gemelas/.test(d)) parts.push(`<path d="M-8 145 L182 20 L194 44 L4 169 Z" fill="${c2}" clip-path="url(#${clipId})" opacity="0.9"/>`);
+        if (/doble|dos|gemelas/.test(d)) {
+          parts.push(`<path d="M-8 145 L182 20 L194 44 L4 169 Z" fill="${c2}" clip-path="url(#${clipId})" opacity="0.9"/>`);
+        }
       } else if (/horizontal|hoops|hoop|franja[s]? (horizontal|horizontales)|barras horizontal/.test(d)) {
         const count = /finas?|estrechas?/.test(d) ? 7 : /anchas?|gruesas?/.test(d) ? 4 : 5;
         const band = 140 / (count * 2);
@@ -1671,7 +1703,6 @@
         parts.push(`<rect x="82" y="0" width="36" height="160" fill="${c2}" clip-path="url(#${clipId})" opacity="0.95"/>`);
       }
 
-      // Detalle de cuello y hombros, conservando el deporte.
       if (isBasket) {
         parts.push(`<path d="M70 15 L65 30 L70 50 Z" fill="${c2}" opacity="0.9"/>`);
         parts.push(`<path d="M130 15 L135 30 L130 50 Z" fill="${c2}" opacity="0.9"/>`);
@@ -1686,7 +1717,8 @@
     }
 
     function jerseySVG(c1, c2, num, deporte, detalleCamiseta, nombre = '') {
-      const h1 = colorHex(c1), h2 = colorHex(c2);
+      const h1 = colorHex(c1);
+      const h2 = colorHex(c2);
       const id = uniqueSvgId(normalizeDetail(deporte) === 'baloncesto' ? 'bb' : 'fb');
       const isBasket = normalizeDetail(deporte) === 'baloncesto';
       const body = isBasket ? jerseyBodyBasketball() : jerseyBodyFootball();
@@ -1716,70 +1748,45 @@
       </svg>`;
     }
 
-    // Basketball Jersey Archive se sirve a través de este Worker para evitar
-    // bloqueos de hotlink/referrer cuando la web está publicada.
-    // function getImageUrl(url) {
-    //   const raw = String(url || '').trim();
-    //   if (!raw) return '';
+    function getImageUrl(url) {
+      let raw = String(url || '').trim();
+      if (!raw) return '';
 
-    //   try {
-    //     const parsed = new URL(raw, window.location.href);
-    //     const host = parsed.hostname.toLowerCase();
-    //     const proxyHosts = new Set([
-    //       'basketballjerseyarchive.com',
-    //       'www.basketballjerseyarchive.com',
-    //       'footballkitarchive.com',
-    //       'www.footballkitarchive.com',
-    //       'i.ebayimg.com',
-    //       'blogger.googleusercontent.com'
-    //     ]);
-
-    //     return proxyHosts.has(host)
-    //       ? `/image-proxy?url=${encodeURIComponent(parsed.href)}`
-    //       : raw;
-    //   } catch (e) {
-    //     return raw;
-    //   }
-    // }
-
-        function getImageUrl(url) {
-        let raw = String(url || '').trim();
-        if (!raw) return '';
-        const markdownMatch = raw.match(/\]\((https?:\/\/[^)]+)\)/);
-        if (markdownMatch) {
-          raw = markdownMatch[1];
-        }
-        return raw;
-      }
+      const markdownMatch = raw.match(/\]\((https?:\/\/[^)]+)\)/);
+      if (markdownMatch) raw = markdownMatch[1];
+      return raw;
+    }
 
     async function fetchData() {
       try {
         document.getElementById('loading').style.display = 'block';
         document.getElementById('errorState').classList.remove('show');
 
-        const valuesUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/'Camisetas'!A:R?key=${API_KEY}`;
+        const range = encodeURIComponent("'Camisetas'!A:R");
+        const valuesUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`;
         const valuesResp = await fetch(valuesUrl);
         if (!valuesResp.ok) throw new Error(`Google Sheets API: ${valuesResp.status}`);
+
         const valuesData = await valuesResp.json();
         const rows = valuesData.values || [];
         const headers = rows[0] || [];
 
-        // Detectamos DetalleCamiseta por nombre; fallback al índice 16 para compatibilidad.
         COLS.detalleCamiseta = findColumn(
           headers,
           ['DetalleCamiseta', 'Detalle Camiseta', 'detalle_camiseta', 'detalle camisetas'],
           COLS.detalleCamiseta
         );
 
-        const formatUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=sheets(properties(sheetId,title),data(rowData(values(effectiveFormat.backgroundColor))))&key=${API_KEY}`;
+        const fields = 'sheets(properties(sheetId,title),data(rowData(values(effectiveFormat/backgroundColor))))';
+        const formatUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}?fields=${encodeURIComponent(fields)}&key=${API_KEY}`;
         const formatResp = await fetch(formatUrl);
         if (!formatResp.ok) throw new Error(`Google Sheets Format: ${formatResp.status}`);
-        const formatData = await formatResp.json();
 
-        const camisetasSheet = formatData.sheets.find(s => s.properties.title === 'Camisetas');
+        const formatData = await formatResp.json();
+        const camisetasSheet = formatData.sheets?.find(s => s.properties.title === 'Camisetas');
         if (!camisetasSheet) throw new Error('No se encontró hoja "Camisetas"');
 
-        const formatRows = camisetasSheet.data[0]?.rowData || [];
+        const formatRows = camisetasSheet.data?.[0]?.rowData || [];
 
         DATA = rows.slice(1).map((row, idx) => {
           if (!row[COLS.temporada]) return null;
@@ -1792,7 +1799,7 @@
             const bgColor = formatRow[colIdx]?.effectiveFormat?.backgroundColor;
             if (bgColor) {
               const hex = rgbToHex(bgColor);
-              if (hex) colors[col] = {bg: hex, text: getTextColor(hex)};
+              if (hex) colors[col] = { bg: hex, text: getTextColor(hex) };
             }
           });
 
@@ -1808,7 +1815,7 @@
             marca: row[COLS.marca] || 'N/A',
             color1: row[COLS.color1] || '',
             color2: row[COLS.color2] || '',
-            numero:  row[COLS.numero] || '',
+            numero: row[COLS.numero] || '',
             nombre: row[COLS.nombre] || '',
             autenticidad: row[COLS.autenticidad] || '',
             deporte: row[COLS.deporte] || '',
@@ -1817,15 +1824,13 @@
             notas: row[COLS.notas] || '',
             colors
           };
-        }).filter(d => d !== null);
+        }).filter(Boolean);
 
         document.getElementById('loading').style.display = 'none';
-
         updateFavCounter();
         renderSportTabs();
         populateFilters();
         render();
-
       } catch (error) {
         console.error('Error:', error);
         const errorDiv = document.getElementById('errorState');
@@ -1842,34 +1847,32 @@
     function populateFilters() {
       const filterGroup = document.getElementById('filterGroup');
       const cols = [
-        {key: 'pais', label: 'País'},
-        {key: 'tipo', label: 'Tipo'},
-        {key: 'marca', label: 'Marca'},
-        {key: 'autenticidad', label: 'Autenticidad'}
+        { key: 'pais', label: 'País' },
+        { key: 'tipo', label: 'Tipo' },
+        { key: 'marca', label: 'Marca' },
+        { key: 'autenticidad', label: 'Autenticidad' }
       ];
 
       filterGroup.innerHTML = cols.map(c => {
         const vals = unique(DATA, c.key);
-        return `<select id="filter${c.key.charAt(0).toUpperCase() + c.key.slice(1)}">
-      <option value="">${c.label} (Todos)</option>
-      ${vals.map(v => `<option value="${v}">${v}</option>`).join('')}
-    </select>`;
+        const id = `filter${c.key.charAt(0).toUpperCase() + c.key.slice(1)}`;
+        return `<select id="${id}" aria-label="Filtrar por ${c.label}">
+          <option value="">${c.label} (Todos)</option>
+          ${vals.map(v => `<option value="${v}">${v}</option>`).join('')}
+        </select>`;
       }).join('');
 
       cols.forEach(c => {
-        const el = document.getElementById(`filter${c.key.charAt(0).toUpperCase() + c.key.slice(1)}`);
-        if (el) el.addEventListener('change', render);
+        const id = `filter${c.key.charAt(0).toUpperCase() + c.key.slice(1)}`;
+        document.getElementById(id)?.addEventListener('change', render);
       });
     }
 
     function renderSportTabs() {
       const sports = unique(DATA, 'deporte');
       const container = document.getElementById('sportsTabs');
-
       let html = `<button class="sport-btn ${!activeSport && !showOnlyFavs ? 'active' : ''}" onclick="setSportFilter('')">Todos</button>`;
-      html += `<button class="sport-btn fav-tab ${showOnlyFavs ? 'active' : ''}" onclick="setFavFilter()">⭐ Favoritas</button>`;
-      html += sports.map(s => `<button class="sport-btn ${activeSport === s && !showOnlyFavs ? 'active' : ''}" onclick="setSportFilter('${s}')">${s}</button>`).join('');
-
+      html += sports.map(s => `<button class="sport-btn ${activeSport === s && !showOnlyFavs ? 'active' : ''}" onclick="setSportFilter('${String(s).replace(/'/g, "\\'")}')">${s}</button>`).join('');
       container.innerHTML = html;
     }
 
@@ -1889,12 +1892,18 @@
 
     function renderStats(items) {
       const stats = [
-        {label: 'Piezas', value: items.length},
-        {label: 'Equipos', value: unique(items, 'equipo').length},
-        {label: 'Países', value: unique(items, 'pais').length},
-        {label: 'Marcas', value: unique(items, 'marca').length}
+        { label: 'Piezas', value: items.length },
+        { label: 'Equipos', value: unique(items, 'equipo').length },
+        { label: 'Países', value: unique(items, 'pais').length },
+        { label: 'Marcas', value: unique(items, 'marca').length }
       ];
-      document.getElementById('stats').innerHTML = stats.map(s => `<div class="stat-cell"><span class="stat-number">${s.value}</span><span class="stat-label">${s.label}</span></div>`).join('');
+
+      document.getElementById('stats').innerHTML = stats.map(s => `
+        <div class="stat-cell">
+          <span class="stat-number">${s.value}</span>
+          <span class="stat-label">${s.label}</span>
+        </div>
+      `).join('');
     }
 
     function normalizeSearchText(value) {
@@ -1914,28 +1923,31 @@
         autenticidad: document.getElementById('filterAutenticidad')?.value || ''
       };
 
-      let list = DATA.filter(d => {
+      const list = DATA.filter(d => {
         if (showOnlyFavs && !favorites.includes(d.id)) return false;
         if (activeSport && d.deporte !== activeSport) return false;
         if (filters.pais && d.pais !== filters.pais) return false;
         if (filters.tipo && d.tipo !== filters.tipo) return false;
         if (filters.marca && d.marca !== filters.marca) return false;
         if (filters.autenticidad && d.autenticidad !== filters.autenticidad) return false;
+
         if (q) {
           const hay = normalizeSearchText(`${d.equipo} ${d.club} ${d.nombre} ${d.temporada} ${d.pais}`);
           if (!hay.includes(q)) return false;
         }
+
         return true;
       });
 
-      // Ordenación
       const sort = document.getElementById('sortSelect').value;
       list.sort((a, b) => {
+        if (sort === 'rawid-desc') return b.rawId - a.rawId;
         if (sort === 'temporada-desc') return b.temporada.localeCompare(a.temporada);
         if (sort === 'temporada-asc') return a.temporada.localeCompare(b.temporada);
         if (sort === 'equipo-asc') return a.equipo.localeCompare(b.equipo);
         if (sort === 'equipo-desc') return b.equipo.localeCompare(a.equipo);
-        if (sort === 'numero-asc') return (parseInt(a.numero) || 999) - (parseInt(b.numero) || 999);
+        if (sort === 'numero-asc') return (parseInt(a.numero, 10) || 999) - (parseInt(b.numero, 10) || 999);
+        if (sort === 'numero-desc') return (parseInt(b.numero, 10) || 0) - (parseInt(a.numero, 10) || 0);
         return 0;
       });
 
@@ -1945,24 +1957,22 @@
     function renderActiveFiltersBar() {
       const bar = document.getElementById('activeFiltersBar');
       const filters = [
-        {key: 'pais', el: document.getElementById('filterPais')},
-        {key: 'tipo', el: document.getElementById('filterTipo')},
-        {key: 'marca', el: document.getElementById('filterMarca')},
-        {key: 'autenticidad', el: document.getElementById('filterAutenticidad')}
+        { key: 'pais', el: document.getElementById('filterPais') },
+        { key: 'tipo', el: document.getElementById('filterTipo') },
+        { key: 'marca', el: document.getElementById('filterMarca') },
+        { key: 'autenticidad', el: document.getElementById('filterAutenticidad') }
       ];
 
-      let chips = [];
+      const chips = [];
       filters.forEach(f => {
-        if (f.el && f.el.value) {
+        if (f.el?.value) {
           chips.push(`<span class="filter-chip" onclick="removeFilter('${f.key}')">${f.el.value} ✕</span>`);
         }
       });
 
-      if (chips.length > 0) {
-        bar.innerHTML = chips.join('') + `<button class="clear-all-btn" onclick="clearAllFilters()">Limpiar todos los filtros</button>`;
-      } else {
-        bar.innerHTML = '';
-      }
+      bar.innerHTML = chips.length
+        ? chips.join('') + `<button class="clear-all-btn" onclick="clearAllFilters()">Limpiar todos los filtros</button>`
+        : '';
     }
 
     function removeFilter(key) {
@@ -1982,161 +1992,138 @@
     }
 
     function renderGallery(items) {
-      const gal = document.getElementById('gallery');
-      gal.innerHTML = items.map((d, index) => {
+      const gallery = document.getElementById('gallery');
+
+      gallery.innerHTML = items.map((d, index) => {
         const hasFoto = d.url && d.url.trim().length > 0;
         const c1 = resolveJerseyColor(d.color1, d.colors?.color1?.bg);
         const c2 = resolveJerseyColor(d.color2, d.colors?.color2?.bg);
-
-        // Solo mostrar el bloque de personalización si existe nombre y/o dorsal real.
         const nombre = cleanJerseyText(d.nombre);
         const numero = cleanJerseyText(d.numero);
         const tieneNombreODorsal = Boolean(nombre || numero);
-        const isFav = favorites.includes(d.id);
 
         return `<div class="card" data-index="${index}">
-      <button class="card-fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${d.id}', event)" title="Guardar en Favoritos">
-        ${isFav ? '★' : '☆'}
-      </button>
-
-      <div class="card-image">
-        ${hasFoto ? `<img src="${getImageUrl(d.url)}" alt="${d.equipo}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
-        <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">${jerseySVG(c1, c2, d.numero, d.deporte, d.detalleCamiseta, d.nombre)}</div>
-      </div>
-      <div class="card-content">
-        <div class="card-season">${d.temporada}</div>
-        <h3 class="card-team">${d.equipo}</h3>
-        <div class="card-club">${d.club !== d.equipo ? d.club : ''}</div>
-        
-        ${tieneNombreODorsal ? `
-          <div class="card-meta">
-            ${nombre ? `
-            <div class="meta-row">
-              <span class="meta-label">Nombre:</span>
-              <span class="meta-val">${nombre}</span>
-            </div>` : ''}
-            ${numero ? `
-            <div class="meta-row">
-              <span class="meta-label">Dorsal:</span>
-              <span class="meta-val">${numero}</span>
-            </div>` : ''}
+          <div class="card-image">
+            ${hasFoto ? `<img src="${getImageUrl(d.url)}" alt="${d.equipo}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+            <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">
+              ${jerseySVG(c1, c2, d.numero, d.deporte, d.detalleCamiseta, d.nombre)}
+            </div>
           </div>
-        ` : ''}
-
-        <div class="card-details">
-          ${d.pais ? `<span class="detail-tag" style="background:${d.colors.pais?.bg || 'var(--bg-card)'}; color:${d.colors.pais?.text || 'var(--text-main)'}">${d.pais}</span>` : ''}
-          ${d.tipo ? `<span class="detail-tag" style="background:${d.colors.tipo?.bg || 'var(--bg-card)'}; color:${d.colors.tipo?.text || 'var(--text-main)'}">${d.tipo}</span>` : ''}
-          ${d.marca !== 'N/A' ? `<span class="detail-tag" style="background:${d.colors.marca?.bg || 'var(--bg-card)'}; color:${d.colors.marca?.text || 'var(--text-main)'}">${d.marca}</span>` : ''}
-          ${d.autenticidad ? `<span class="detail-tag" style="background:${d.colors.autenticidad?.bg || 'var(--bg-card)'}; color:${d.colors.autenticidad?.text || 'var(--text-main)'}">${d.autenticidad}</span>` : ''}
-        </div>
-        ${d.notas ? `<button class="card-toggle" onclick="event.stopPropagation(); toggleNotes(this)">+ Notas del coleccionista</button><div class="card-notes">${d.notas}</div>` : ''}
-      </div>
-    </div>`;
+          <div class="card-content">
+            <div class="card-season">${d.temporada}</div>
+            <h3 class="card-team">${d.equipo}</h3>
+            <div class="card-club">${d.club !== d.equipo ? d.club : ''}</div>
+            ${tieneNombreODorsal ? `
+              <div class="card-meta">
+                ${nombre ? `<div class="meta-row"><span class="meta-label">Nombre:</span><span class="meta-val">${nombre}</span></div>` : ''}
+                ${numero ? `<div class="meta-row"><span class="meta-label">Dorsal:</span><span class="meta-val">${numero}</span></div>` : ''}
+              </div>
+            ` : ''}
+            <div class="card-details">
+              ${d.pais ? `<span class="detail-tag" style="background:${d.colors.pais?.bg || 'var(--bg-card)'}; color:${d.colors.pais?.text || 'var(--text-main)'}">${d.pais}</span>` : ''}
+              ${d.tipo ? `<span class="detail-tag" style="background:${d.colors.tipo?.bg || 'var(--bg-card)'}; color:${d.colors.tipo?.text || 'var(--text-main)'}">${d.tipo}</span>` : ''}
+              ${d.marca !== 'N/A' ? `<span class="detail-tag" style="background:${d.colors.marca?.bg || 'var(--bg-card)'}; color:${d.colors.marca?.text || 'var(--text-main)'}">${d.marca}</span>` : ''}
+              ${d.autenticidad ? `<span class="detail-tag" style="background:${d.colors.autenticidad?.bg || 'var(--bg-card)'}; color:${d.colors.autenticidad?.text || 'var(--text-main)'}">${d.autenticidad}</span>` : ''}
+            </div>
+            ${d.notas ? `<button class="card-toggle" onclick="event.stopPropagation(); toggleNotes(this)">+ Notas del coleccionista</button><div class="card-notes">${d.notas}</div>` : ''}
+          </div>
+        </div>`;
       }).join('');
 
-      gal.querySelectorAll('.card').forEach(cardEl => {
+      gallery.querySelectorAll('.card').forEach(cardEl => {
         cardEl.addEventListener('click', () => {
-          const idx = cardEl.dataset.index;
+          const idx = Number(cardEl.dataset.index);
           openModal(items[idx]);
         });
       });
     }
 
-    function toggleNotes(btn) {
-      const card = btn.closest('.card');
+    function toggleNotes(button) {
+      const card = button.closest('.card');
       card.classList.toggle('expanded');
-      btn.textContent = card.classList.contains('expanded') ? '- Ocultar notas' : '+ Notas del coleccionista';
+      button.textContent = card.classList.contains('expanded') ? '- Ocultar notas' : '+ Notas del coleccionista';
     }
 
     function renderTable(items) {
       const body = document.getElementById('tableBody');
+
       body.innerHTML = items.map((d, index) => {
         const isFav = favorites.includes(d.id);
-        return `
-    <tr data-index="${index}">
-      <td onclick="toggleFavorite('${d.id}', event)" style="color:var(--accent-gold); font-size:16px;">${isFav ? '★' : '☆'}</td>
-      <td>${d.temporada}</td>
-      <td><strong>${d.equipo}</strong></td>
-      <td>${d.club}</td>
-      <td>${d.pais}</td>
-      <td>${d.tipo}</td>
-      <td>${d.marca}</td>
-      <td>${cleanJerseyText(d.numero) || '—'}</td>
-      <td>${cleanJerseyText(d.nombre) || '—'}</td>
-      <td>${d.autenticidad}</td>
-      <td>${d.deporte}</td>
-    </tr>`;
+        return `<tr data-index="${index}">
+          <td onclick="toggleFavorite('${d.id}', event)" style="color:var(--accent-gold); font-size:16px;">${isFav ? '★' : '☆'}</td>
+          <td>${d.temporada}</td>
+          <td><strong>${d.equipo}</strong></td>
+          <td>${d.club}</td>
+          <td>${d.pais}</td>
+          <td>${d.tipo}</td>
+          <td>${d.marca}</td>
+          <td>${cleanJerseyText(d.numero) || '—'}</td>
+          <td>${cleanJerseyText(d.nombre) || '—'}</td>
+          <td>${d.autenticidad}</td>
+          <td>${d.deporte}</td>
+        </tr>`;
       }).join('');
 
       body.querySelectorAll('tr').forEach(rowEl => {
-        rowEl.addEventListener('click', (e) => {
-          if (e.target.tagName === 'TD' && e.target.cellIndex === 0) return;
-          const idx = rowEl.dataset.index;
+        rowEl.addEventListener('click', event => {
+          if (event.target.tagName === 'TD' && event.target.cellIndex === 0) return;
+          const idx = Number(rowEl.dataset.index);
           openModal(items[idx]);
         });
       });
     }
 
-    /* Modal Pop-up */
     function openModal(d) {
       const hasFoto = d.url && d.url.trim().length > 0;
       const imageUrl = getImageUrl(d.url);
       const c1 = resolveJerseyColor(d.color1, d.colors?.color1?.bg);
       const c2 = resolveJerseyColor(d.color2, d.colors?.color2?.bg);
-      const isFav = favorites.includes(d.id);
-
       const modalBody = document.getElementById('modalBody');
+
       modalBody.innerHTML = `
-    <div class="modal-image-col" onclick='openLightbox(${JSON.stringify(imageUrl)})'>
-      <button class="card-fav-btn modal-image-fav ${isFav ? 'active' : ''}" onclick="toggleFavorite('${d.id}', event); openModal(DATA.find(x=>x.id==='${d.id}'));" title="Guardar en Favoritos">
-        ${isFav ? '★' : '☆'}
-      </button>
-      ${hasFoto ? `<img src="${imageUrl}" alt="${d.equipo}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
-      <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">${jerseySVG(c1, c2, d.numero, d.deporte, d.detalleCamiseta, d.nombre)}</div>
-    </div>
-    <div class="modal-info-col">
-      <div class="modal-season">${d.temporada} • ${d.deporte || 'Deporte'}</div>
-      <h2 class="modal-team">${d.equipo}</h2>
-      <div class="modal-club">${d.club !== d.equipo ? d.club : ''}</div>
-
-      <div class="modal-grid-details">
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">Nombre / Jugador</span>
-          <span class="modal-detail-val">${cleanJerseyText(d.nombre) || '—'}</span>
+        <div class="modal-image-col" ${hasFoto ? `onclick='openLightbox(${JSON.stringify(imageUrl)})'` : ''}>
+          ${hasFoto ? `<img src="${imageUrl}" alt="${d.equipo}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
+          <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">
+            ${jerseySVG(c1, c2, d.numero, d.deporte, d.detalleCamiseta, d.nombre)}
+          </div>
         </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">Dorsal</span>
-          <span class="modal-detail-val">${cleanJerseyText(d.numero) ? '#' + cleanJerseyText(d.numero) : '—'}</span>
+        <div class="modal-info-col">
+          <div class="modal-season">${d.temporada} • ${d.deporte || 'Deporte'}</div>
+          <h2 class="modal-team">${d.equipo}</h2>
+          <div class="modal-club">${d.club !== d.equipo ? d.club : ''}</div>
+          <div class="modal-grid-details">
+            <div class="modal-detail-item">
+              <span class="modal-detail-label">Nombre / Jugador</span>
+              <span class="modal-detail-val">${cleanJerseyText(d.nombre) || '—'}</span>
+            </div>
+            <div class="modal-detail-item">
+              <span class="modal-detail-label">Dorsal</span>
+              <span class="modal-detail-val">${cleanJerseyText(d.numero) ? '#' + cleanJerseyText(d.numero) : '—'}</span>
+            </div>
+            <div class="modal-detail-item">
+              <span class="modal-detail-label">País</span>
+              <span class="modal-detail-val">${d.pais || '—'}</span>
+            </div>
+            <div class="modal-detail-item">
+              <span class="modal-detail-label">Marca</span>
+              <span class="modal-detail-val">${d.marca || '—'}</span>
+            </div>
+            <div class="modal-detail-item">
+              <span class="modal-detail-label">Tipo</span>
+              <span class="modal-detail-val">${d.tipo || '—'}</span>
+            </div>
+            <div class="modal-detail-item">
+              <span class="modal-detail-label">Autenticidad</span>
+              <span class="modal-detail-val">${d.autenticidad || '—'}</span>
+            </div>
+            <div class="modal-detail-item">
+              <span class="modal-detail-label">Edición</span>
+              <span class="modal-detail-val">${d.edicion || '—'}</span>
+            </div>
+          </div>
+          ${d.notas ? `<div class="modal-notes"><strong style="color:var(--accent);">Notas de Archivo:</strong><br>${d.notas}</div>` : ''}
         </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">País</span>
-          <span class="modal-detail-val">${d.pais || '—'}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">Marca</span>
-          <span class="modal-detail-val">${d.marca || '—'}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">Tipo</span>
-          <span class="modal-detail-val">${d.tipo || '—'}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">Autenticidad</span>
-          <span class="modal-detail-val">${d.autenticidad || '—'}</span>
-        </div>
-        <div class="modal-detail-item">
-          <span class="modal-detail-label">Edición</span>
-          <span class="modal-detail-val">${d.edicion || '—'}</span>
-        </div>
-      </div>
-
-      ${d.notas ? `
-        <div class="modal-notes">
-          <strong style="color:var(--accent);">Notas de Archivo:</strong><br>${d.notas}
-        </div>
-      ` : ''}
-    </div>
-  `;
+      `;
 
       document.getElementById('modalOverlay').classList.add('active');
     }
@@ -2147,35 +2134,28 @@
 
     function openLightbox(url) {
       if (!url) return;
-      const finalUrl = getImageUrl(url);
       const img = document.getElementById('lightboxImg');
-      img.src = finalUrl;
+      img.src = getImageUrl(url);
       img.referrerPolicy = 'no-referrer';
       document.getElementById('lightbox').classList.add('active');
     }
 
-    document.getElementById('lightbox').addEventListener('click', () => {
-      document.getElementById('lightbox').classList.remove('active');
-    });
-
-    document.getElementById('modalClose').addEventListener('click', closeModal);
-    document.getElementById('modalOverlay').addEventListener('click', (e) => {
-      if (e.target === document.getElementById('modalOverlay')) closeModal();
-    });
-
     function computeRank(items, key, limit) {
       const counts = {};
       items.forEach(d => {
-        const v = d[key];
-        if (!v || v === 'N/A') return;
-        counts[v] = (counts[v] || 0) + 1;
+        const value = d[key];
+        if (!value || value === 'N/A') return;
+        counts[value] = (counts[value] || 0) + 1;
       });
+
       const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
       const total = items.length || 1;
       const max = sorted[0]?.[1] || 1;
+
       return {
         items: sorted.slice(0, limit).map(([name, count]) => ({
-          name, count,
+          name,
+          count,
           pct: Math.round((count / total) * 100),
           barPct: Math.round((count / max) * 100)
         })),
@@ -2184,17 +2164,28 @@
     }
 
     function renderRankCard(container, title, items, key, limit) {
-      const {items: ranks, distinct} = computeRank(items, key, limit);
+      const { items: ranks, distinct } = computeRank(items, key, limit);
       const card = document.createElement('div');
       card.className = 'rank-card';
-      card.innerHTML = `<div class="rank-title">${title} <span style="float:right;font-size:12px;font-weight:400;color:var(--text-muted);">${distinct} distintas</span></div>
-    ${ranks.map((r, i) => `<div class="rank-item">
-      <div class="rank-badge">${i + 1}</div>
-      <div class="rank-info">
-        <div class="rank-name"><span>${r.name}</span><span style="color:var(--accent);">${r.count}</span></div>
-        <div class="rank-bar"><div class="rank-fill" style="width:${r.barPct}%"></div></div>
-      </div>
-    </div>`).join('')}`;
+      card.innerHTML = `
+        <div class="rank-title">
+          ${title}
+          <span style="float:right;font-size:11px;font-weight:400;color:var(--text-muted);">${distinct} distintas</span>
+        </div>
+        ${ranks.map((r, i) => `
+          <div class="rank-item">
+            <div class="rank-badge">${i + 1}</div>
+            <div class="rank-info">
+              <div class="rank-name">
+                <span>${r.name}</span>
+                <span style="color:var(--accent);">${r.count}</span>
+              </div>
+              <div class="rank-bar"><div class="rank-fill" style="width:${r.barPct}%"></div></div>
+            </div>
+          </div>
+        `).join('')}
+      `;
+
       container.appendChild(card);
     }
 
@@ -2215,38 +2206,55 @@
 
       const items = getFiltered();
       const total = DATA.length;
+      const empty = items.length === 0;
 
       renderStats(items);
       renderActiveFiltersBar();
+      updateFavCounter();
 
-      document.getElementById('resultsCount').textContent = items.length === total ? `${total} piezas catalogadas` : `${items.length} de ${total} piezas encontradas`;
+      document.getElementById('resultsCount').textContent = items.length === total
+        ? `${total} piezas catalogadas`
+        : `${items.length} de ${total} piezas encontradas`;
 
-      const empty = items.length === 0;
       document.getElementById('emptyState').classList.toggle('show', empty && currentView !== 'totales');
-
       document.getElementById('gallery').style.display = currentView === 'grid' && !empty ? 'grid' : 'none';
       document.getElementById('tableView').classList.toggle('active', currentView === 'table' && !empty);
       document.getElementById('totalesView').classList.toggle('active', currentView === 'totales');
 
-      if (currentView === 'grid') renderGallery(items);
-      if (currentView === 'table') renderTable(items);
+      if (currentView === 'grid' && !empty) renderGallery(items);
+      if (currentView === 'table' && !empty) renderTable(items);
       if (currentView === 'totales') renderTotales(items);
     }
 
     document.getElementById('search').addEventListener('input', render);
     document.getElementById('sortSelect').addEventListener('change', render);
 
-    document.querySelectorAll('.view-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        currentView = btn.dataset.view;
+    document.querySelectorAll('.view-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.view-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        currentView = button.dataset.view;
         render();
       });
+    });
+
+    document.getElementById('lightbox').addEventListener('click', () => {
+      document.getElementById('lightbox').classList.remove('active');
+    });
+
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+    document.getElementById('modalOverlay').addEventListener('click', event => {
+      if (event.target === document.getElementById('modalOverlay')) closeModal();
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        document.getElementById('lightbox').classList.remove('active');
+        closeModal();
+      }
     });
 
     fetchData();
   </script>
 </body>
-
 </html>
