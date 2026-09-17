@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -473,7 +474,7 @@
       box-shadow: var(--shadow-card), 0 0 26px var(--accent-glow);
     }
 
-     /* .card-image {
+    /* .card-image {
       position: relative;
       display: flex;
       width: 100%;
@@ -502,49 +503,46 @@
     }  */
 
     .card-image {
-  position: relative;
-  display: flex;
-  width: 100%;
-  aspect-ratio: 1 / 0.98;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border);
+      position: relative;
+      display: flex;
+      width: 100%;
+      aspect-ratio: 1 / 0.98;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
 
-  background:
-    radial-gradient(
-      circle at 50% 43%,
-      #ffffff 0%,
-      #ffffff 46%,
-      #f8f9fb 70%,
-      #f1f3f6 100%
-    );
-}
+      background:
+        radial-gradient(circle at 50% 42%,
+          rgba(56, 189, 248, 0.10) 0%,
+          rgba(30, 41, 59, 0.82) 42%,
+          rgba(15, 23, 42, 0.98) 100%);
+    }
 
-.card-image::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 10%;
-  width: 42%;
-  height: 10%;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  background: rgba(30, 38, 48, 0.08);
-  filter: blur(18px);
-  opacity: 0.45;
-  pointer-events: none;
-}
+    .card-image::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: 9%;
+      width: 44%;
+      height: 8%;
+      transform: translateX(-50%);
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.34);
+      filter: blur(20px);
+      opacity: 0.75;
+      pointer-events: none;
+    }
 
-.card-image img {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
-  filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.44));
-}
+    .card-image img {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.48));
+    }
 
     .card:hover .card-image img {
       transform: scale(1.045);
@@ -759,7 +757,7 @@
       max-height: 350px;
     } */
 
-.modal-image-col {
+    .modal-image-col {
   position: relative;
   display: flex;
   min-height: 430px;
@@ -771,26 +769,25 @@
 
   background:
     radial-gradient(
-      circle at 50% 45%,
-      #ffffff 0%,
-      #ffffff 50%,
-      #f7f8fa 76%,
-      #eef1f4 100%
+      circle at 50% 40%,
+      rgba(56, 189, 248, 0.14) 0%,
+      rgba(30, 41, 59, 0.72) 38%,
+      rgba(13, 20, 36, 1) 82%
     );
 }
 
-.modal-image-col::after {
+    .modal-image-col::after {
   content: '';
   position: absolute;
   left: 50%;
-  bottom: 9%;
-  width: 38%;
-  height: 9%;
+  bottom: 8%;
+  width: 42%;
+  height: 8%;
   transform: translateX(-50%);
   border-radius: 50%;
-  background: rgba(30, 38, 48, 0.08);
-  filter: blur(20px);
-  opacity: 0.4;
+  background: rgba(0, 0, 0, 0.38);
+  filter: blur(24px);
+  opacity: 0.8;
   pointer-events: none;
 }
 
@@ -800,7 +797,127 @@
   width: 100%;
   max-height: 450px;
   object-fit: contain;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.48));
 }
+
+    .modal-carousel {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      min-height: 360px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-carousel-image {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 100%;
+      max-height: 450px;
+      object-fit: contain;
+      cursor: zoom-in;
+      user-select: none;
+      -webkit-user-drag: none;
+      transition: opacity 0.16s ease;
+    }
+
+    .modal-carousel-nav {
+      position: absolute;
+      top: 50%;
+      z-index: 3;
+      display: flex;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.82);
+      color: #0f172a;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+      cursor: pointer;
+      font-size: 27px;
+      line-height: 1;
+      transform: translateY(-50%);
+      transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .modal-carousel-nav:hover {
+      background: #ffffff;
+      box-shadow: 0 10px 22px rgba(15, 23, 42, 0.22);
+    }
+
+    .modal-carousel-nav:active {
+      transform: translateY(-50%) scale(0.96);
+    }
+
+    .modal-carousel-prev {
+      left: 8px;
+    }
+
+    .modal-carousel-next {
+      right: 8px;
+    }
+
+    .modal-carousel-dots {
+      position: absolute;
+      left: 50%;
+      bottom: 7px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transform: translateX(-50%);
+    }
+
+    .modal-carousel-dot {
+      width: 7px;
+      height: 7px;
+      padding: 0;
+      border: 1px solid rgba(15, 23, 42, 0.18);
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.18);
+      cursor: pointer;
+      transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .modal-carousel-dot:hover {
+      transform: scale(1.15);
+    }
+
+    .modal-carousel-dot.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      transform: scale(1.15);
+    }
+
+    @media (max-width: 768px) {
+      .modal-carousel {
+        min-height: 190px;
+      }
+
+      .modal-carousel-image {
+        max-height: 32vh;
+      }
+
+      .modal-carousel-nav {
+        width: 36px;
+        height: 36px;
+        font-size: 24px;
+      }
+
+      .modal-carousel-prev {
+        left: 4px;
+      }
+
+      .modal-carousel-next {
+        right: 4px;
+      }
+    }
 
     .modal-info-col {
       display: flex;
@@ -1020,7 +1137,7 @@
       font-size: 12px;
     }
 
-    .rank-name > span:first-child {
+    .rank-name>span:first-child {
       min-width: 0;
       overflow-wrap: anywhere;
     }
@@ -1313,11 +1430,11 @@
       } */
 
       .modal-image-col svg {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-height: 350px;
-}
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-height: 350px;
+      }
 
       .modal-info-col {
         padding: 26px 18px 28px;
@@ -1354,6 +1471,7 @@
     }
 
     @media (max-width: 480px) {
+
       .controls-inner,
       .active-filters-bar,
       .results-count,
@@ -1469,13 +1587,15 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <div class="header-inner">
       <h1><span class="brand-castizo">El Vestuario de Castizo</span></h1>
       <p class="description">Colección actual</p>
       <p class="description">
-        Más de una década reuniendo camisetas de equipos históricos y actuales. Desde clásicos de los años 80 hasta ediciones especiales contemporáneas.
+        Más de una década reuniendo camisetas de equipos históricos y actuales. Desde clásicos de los años 80 hasta
+        ediciones especiales contemporáneas.
       </p>
       <div class="stats-row" id="stats"></div>
     </div>
@@ -1852,6 +1972,150 @@
       return raw;
     }
 
+    // Máximo de imágenes por camiseta: principal + 2 adicionales.
+    const MAX_MODAL_CAROUSEL_IMAGES = 3;
+
+    function getSiblingImageUrl(url, number) {
+      const raw = getImageUrl(url);
+      if (!raw) return '';
+
+      // Añade el número al final del nombre del archivo, antes de la extensión.
+      // Ejemplo: local.png -> local2.png -> local3.png
+      const match = raw.match(/^(.*\/)([^/]+?)(\.[^./?#]+)([?#].*)?$/);
+      if (!match) return '';
+
+      const [, path, baseName, extension, suffix = ''] = match;
+      return `${path}${baseName}${number}${extension}${suffix}`;
+    }
+
+    function imageExists(url) {
+      return new Promise(resolve => {
+        if (!url) {
+          resolve(false);
+          return;
+        }
+
+        const img = new Image();
+        let settled = false;
+        const timeoutId = setTimeout(() => finish(false), 5000);
+
+        function finish(result) {
+          if (settled) return;
+          settled = true;
+          clearTimeout(timeoutId);
+          resolve(result);
+        }
+
+        img.onload = () => finish(true);
+        img.onerror = () => finish(false);
+        img.referrerPolicy = 'no-referrer';
+        img.src = url;
+      });
+    }
+
+    async function findModalCarouselImages(mainUrl) {
+      const urls = [mainUrl];
+
+      for (let number = 2; number <= MAX_MODAL_CAROUSEL_IMAGES; number++) {
+        const candidate = getSiblingImageUrl(mainUrl, number);
+        if (!candidate) continue;
+
+        if (await imageExists(candidate)) {
+          urls.push(candidate);
+        }
+      }
+
+      return urls;
+    }
+
+    async function initModalCarousel(carouselId, mainUrl, altText) {
+      const container = document.getElementById(carouselId);
+      if (!container || !mainUrl) return;
+
+      const image = container.querySelector('.modal-carousel-image');
+      if (!image) return;
+
+      image.addEventListener('click', () => openLightbox(image.src));
+
+      const urls = await findModalCarouselImages(mainUrl);
+      const currentContainer = document.getElementById(carouselId);
+      if (!currentContainer || !currentContainer.isConnected) return;
+
+      // Una sola foto: se mantiene exactamente como una imagen normal,
+      // sin flechas ni puntos.
+      if (urls.length <= 1) return;
+
+      let currentIndex = 0;
+
+      const prevButton = document.createElement('button');
+      prevButton.type = 'button';
+      prevButton.className = 'modal-carousel-nav modal-carousel-prev';
+      prevButton.setAttribute('aria-label', 'Imagen anterior');
+      prevButton.innerHTML = '‹';
+
+      const nextButton = document.createElement('button');
+      nextButton.type = 'button';
+      nextButton.className = 'modal-carousel-nav modal-carousel-next';
+      nextButton.setAttribute('aria-label', 'Imagen siguiente');
+      nextButton.innerHTML = '›';
+
+      const dots = document.createElement('div');
+      dots.className = 'modal-carousel-dots';
+      dots.setAttribute('role', 'group');
+      dots.setAttribute('aria-label', 'Imágenes de la camiseta');
+
+      const dotButtons = [];
+
+      const showImage = index => {
+        currentIndex = (index + urls.length) % urls.length;
+        image.style.opacity = '0.45';
+
+        const preload = new Image();
+        preload.referrerPolicy = 'no-referrer';
+        preload.onload = () => {
+          image.src = urls[currentIndex];
+          image.alt = altText;
+          requestAnimationFrame(() => {
+            image.style.opacity = '1';
+          });
+        };
+        preload.onerror = () => {
+          image.style.opacity = '1';
+        };
+        preload.src = urls[currentIndex];
+
+        dotButtons.forEach((dot, dotIndex) => {
+          dot.classList.toggle('active', dotIndex === currentIndex);
+        });
+      };
+
+      urls.forEach((url, index) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'modal-carousel-dot';
+        dot.setAttribute('aria-label', `Mostrar imagen ${index + 1}`);
+        dot.addEventListener('click', event => {
+          event.stopPropagation();
+          showImage(index);
+        });
+        dots.appendChild(dot);
+        dotButtons.push(dot);
+      });
+
+      prevButton.addEventListener('click', event => {
+        event.stopPropagation();
+        showImage(currentIndex - 1);
+      });
+
+      nextButton.addEventListener('click', event => {
+        event.stopPropagation();
+        showImage(currentIndex + 1);
+      });
+
+      currentContainer.append(prevButton, nextButton, dots);
+      showImage(0);
+    }
+
     async function fetchData() {
       try {
         document.getElementById('loading').style.display = 'block';
@@ -2048,12 +2312,12 @@
 
       list.sort((a, b) => {
         if (sort === "rawid-desc") return b.rawId - a.rawId;
-        if (sort === "temporada-desc") return b.temporada.localeCompare(a.temporada) || b.rawId - a.rawId;  
-        if (sort === "temporada-asc") return a.temporada.localeCompare(b.temporada) || b.rawId - a.rawId;  
-        if (sort === "equipo-asc") return a.equipo.localeCompare(b.equipo) || b.rawId - a.rawId;  
-        if (sort === "equipo-desc") return b.equipo.localeCompare(a.equipo) || b.rawId - a.rawId;  
-        if (sort === "numero-asc") return ((parseInt(a.numero, 10) || 999) - (parseInt(b.numero, 10) || 999) || b.rawId - a.rawId);  
-        if (sort === "numero-desc") return ((parseInt(b.numero, 10) || 0) - (parseInt(a.numero, 10) || 0) || b.rawId - a.rawId);  
+        if (sort === "temporada-desc") return b.temporada.localeCompare(a.temporada) || b.rawId - a.rawId;
+        if (sort === "temporada-asc") return a.temporada.localeCompare(b.temporada) || b.rawId - a.rawId;
+        if (sort === "equipo-asc") return a.equipo.localeCompare(b.equipo) || b.rawId - a.rawId;
+        if (sort === "equipo-desc") return b.equipo.localeCompare(a.equipo) || b.rawId - a.rawId;
+        if (sort === "numero-asc") return ((parseInt(a.numero, 10) || 999) - (parseInt(b.numero, 10) || 999) || b.rawId - a.rawId);
+        if (sort === "numero-desc") return ((parseInt(b.numero, 10) || 0) - (parseInt(a.numero, 10) || 0) || b.rawId - a.rawId);
         return 0;
       });
 
@@ -2185,13 +2449,26 @@
       const c1 = resolveJerseyColor(d.color1, d.colors?.color1?.bg);
       const c2 = resolveJerseyColor(d.color2, d.colors?.color2?.bg);
       const modalBody = document.getElementById('modalBody');
+      const carouselId = hasFoto ? uniqueSvgId('modal-carousel') : '';
 
       modalBody.innerHTML = `
-        <div class="modal-image-col" ${hasFoto ? `onclick='openLightbox(${JSON.stringify(imageUrl)})'` : ''}>
-          ${hasFoto ? `<img src="${imageUrl}" alt="${d.equipo}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : ''}
-          <div style="display:${hasFoto ? 'none' : 'flex'}; width:100%; height:100%; align-items:center; justify-content:center;">
-            ${jerseySVG(c1, c2, d.numero, d.deporte, d.detalleCamiseta, d.nombre)}
-          </div>
+        <div class="modal-image-col">
+          ${hasFoto ? `
+            <div class="modal-carousel" id="${carouselId}">
+              <img
+                class="modal-carousel-image"
+                src="${imageUrl}"
+                alt="${d.equipo}"
+                loading="eager"
+                decoding="async"
+                referrerpolicy="no-referrer"
+              >
+            </div>
+          ` : `
+            <div style="display:flex; width:100%; height:100%; align-items:center; justify-content:center;">
+              ${jerseySVG(c1, c2, d.numero, d.deporte, d.detalleCamiseta, d.nombre)}
+            </div>
+          `}
         </div>
         <div class="modal-info-col">
           <div class="modal-season">${d.temporada} • ${d.deporte || 'Deporte'}</div>
@@ -2232,6 +2509,10 @@
       `;
 
       document.getElementById('modalOverlay').classList.add('active');
+
+      if (hasFoto) {
+        initModalCarousel(carouselId, imageUrl, d.equipo);
+      }
     }
 
     function closeModal() {
@@ -2363,4 +2644,5 @@
     fetchData();
   </script>
 </body>
+
 </html>
