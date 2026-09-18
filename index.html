@@ -1972,23 +1972,106 @@
       return raw;
     }
 
-    // Máximo de imágenes por camiseta: principal + 2 adicionales.
+    // Número máximo de imágenes numeradas que se buscarán (principal + 2..8).
+    // La búsqueda real se hace leyendo el contenido de la carpeta de GitHub,
+    // así que puede haber huecos: local.png + local2.png + local4.png funciona.
     const MAX_MODAL_CAROUSEL_IMAGES = 8;
+    const githubFolderCache = new Map();
 
-    function getSiblingImageUrl(url, number) {
+    function escapeRegExp(value) {
+      return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function parseGitHubRawUrl(url) {
+      try {
+        const parsed = new URL(getImageUrl(url));
+        if (parsed.hostname !== 'raw.githubusercontent.com') return null;
+
+        const parts = parsed.pathname.split('/').filter(Boolean);
+        if (parts.length < 5) return null;
+
+        // Formato habitual:
+        // /owner/repo/refs/heads/main/path/al/archivo.png
+        const owner = parts[0];
+        const repo = parts[1];
+        const refsIndex = parts.indexOf('refs', 2);
+
+        if (refsIndex === 2 && parts[3] === 'heads' && parts.length >= 6) {
+          const branch = parts[4];
+          const path = parts.slice(5).join('/');
+          return { owner, repo, branch, path };
+        }
+
+        // Compatibilidad con URLs antiguas:
+        // /owner/repo/main/path/al/archivo.png
+        if (parts.length >= 4) {
+          const branch = parts[2];
+          const path = parts.slice(3).join('/');
+          return { owner, repo, branch, path };
+        }
+      } catch (error) {
+        // No es una URL válida de GitHub Raw.
+      }
+
+      return null;
+    }
+
+    async function getGitHubFolderFiles(mainUrl) {
+      const parsed = parseGitHubRawUrl(mainUrl);
+      if (!parsed) return null;
+
+      const folderPath = parsed.path.split('/').slice(0, -1).join('/');
+      const cacheKey = `${parsed.owner}/${parsed.repo}/${parsed.branch}/${folderPath}`;
+
+      if (githubFolderCache.has(cacheKey)) {
+        return githubFolderCache.get(cacheKey);
+      }
+
+      const apiUrl = `https://api.github.com/repos/${encodeURIComponent(parsed.owner)}/${encodeURIComponent(parsed.repo)}/contents/${folderPath.split('/').map(encodeURIComponent).join('/')}?ref=${encodeURIComponent(parsed.branch)}`;
+
+      try {
+        const response = await fetch(apiUrl, {
+          headers: { Accept: 'application/vnd.github+json' },
+          cache: 'no-store'
+        });
+
+        if (!response.ok) return null;
+
+        const data = await response.json();
+        if (!Array.isArray(data)) return null;
+
+        const files = data
+          .filter(item => item && item.type === 'file' && item.name)
+          .map(item => ({
+            name: item.name,
+            url: item.download_url || ''
+          }));
+
+        githubFolderCache.set(cacheKey, files);
+        return files;
+      } catch (error) {
+        console.warn('No se pudo consultar la carpeta de GitHub:', error);
+        return null;
+      }
+    }
+
+    function getImageStemAndExtension(url) {
       const raw = getImageUrl(url);
-      if (!raw) return '';
+      const match = raw.match(/(?:^|\/)([^/]+?)(\.[^./?#]+)(?:[?#].*)?$/);
+      if (!match) return null;
+      return { baseName: match[1], extension: match[2] };
+    }
 
-      // Añade el número al final del nombre del archivo, antes de la extensión.
-      // Ejemplo: local.png -> local2.png -> local3.png
+    function buildFallbackSiblingUrl(url, number) {
+      const raw = getImageUrl(url);
       const match = raw.match(/^(.*\/)([^/]+?)(\.[^./?#]+)([?#].*)?$/);
       if (!match) return '';
 
-      const [, path, baseName, extension, suffix = ''] = match;
-      return `${path}${baseName}${number}${extension}${suffix}`;
+      const [, path, baseName, extension] = match;
+      return `${path}${baseName}${number}${extension}`;
     }
 
-    function imageExists(url) {
+    async function imageExists(url) {
       return new Promise(resolve => {
         if (!url) {
           resolve(false);
@@ -2014,16 +2097,63 @@
     }
 
     async function findModalCarouselImages(mainUrl) {
-      const urls = [mainUrl];
+      const main = getImageUrl(mainUrl);
+      if (!main) return [];
 
-      for (let number = 2; number <= MAX_MODAL_CAROUSEL_IMAGES; number++) {
-        const candidate = getSiblingImageUrl(mainUrl, number);
-        if (!candidate) continue;
+      const urls = [main];
+      const fileInfo = getImageStemAndExtension(main);
 
-        if (await imageExists(candidate)) {
-          urls.push(candidate);
-        }
+      if (!fileInfo) return urls;
+
+      // Preferimos consultar directamente la carpeta de GitHub. Esto evita
+      // depender de que la numeración sea consecutiva y detecta local4 aunque
+      // local3 no exista.
+      const folderFiles = await getGitHubFolderFiles(main);
+      const basePattern = new RegExp(`^${escapeRegExp(fileInfo.baseName)}(\\d+)?${escapeRegExp(fileInfo.extension)}$`);
+
+      if (folderFiles) {
+        const matches = folderFiles
+          .map(file => ({
+            file,
+            match: file.name.match(basePattern)
+          }))
+          .filter(item => item.match)
+          .map(item => ({
+            name: item.file.name,
+            number: item.match[1] ? Number(item.match[1]) : 1,
+            url: item.file.url
+          }))
+          .filter(item => item.number >= 1 && item.number <= MAX_MODAL_CAROUSEL_IMAGES)
+          .sort((a, b) => a.number - b.number);
+
+        matches.forEach(item => {
+          if (item.number === 1) return;
+          if (item.url && !urls.includes(item.url)) urls.push(item.url);
+        });
+
+        return urls;
       }
+
+      // Fallback para URLs que no sean GitHub Raw o si la API no responde.
+      const candidates = [];
+      for (let number = 2; number <= MAX_MODAL_CAROUSEL_IMAGES; number++) {
+        candidates.push({
+          number,
+          url: buildFallbackSiblingUrl(main, number)
+        });
+      }
+
+      const results = await Promise.all(
+        candidates.map(async candidate => ({
+          ...candidate,
+          exists: await imageExists(candidate.url)
+        }))
+      );
+
+      results
+        .filter(item => item.exists)
+        .sort((a, b) => a.number - b.number)
+        .forEach(item => urls.push(item.url));
 
       return urls;
     }
