@@ -215,7 +215,7 @@
     .sports-filter,
     .view-btns {
       display: flex;
-      gap: 3px;
+      gap: 17px;
       padding: 4px;
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
@@ -1627,8 +1627,7 @@
   </div>
 
   <div class="results-count">
-    <span id="resultsCount">Cargando...</span>
-    <span id="favsCounter"></span>
+    <span id="resultsCount"></span>
   </div>
 
   <div class="content">
@@ -1640,7 +1639,6 @@
       <table>
         <thead>
           <tr>
-            <th>⭐</th>
             <th>Temporada</th>
             <th>Equipo</th>
             <th>Club</th>
@@ -1726,29 +1724,6 @@
         if (idx >= 0) return idx;
       }
       return fallback;
-    }
-
-    function saveFavorites() {
-      localStorage.setItem('jersey_favs', JSON.stringify(favorites));
-      updateFavCounter();
-    }
-
-    function toggleFavorite(id, event) {
-      if (event) event.stopPropagation();
-      const index = favorites.indexOf(id);
-      if (index > -1) {
-        favorites.splice(index, 1);
-      } else {
-        favorites.push(id);
-      }
-      saveFavorites();
-      render();
-    }
-
-    function updateFavCounter() {
-      const counter = document.getElementById('favsCounter');
-      if (!counter) return;
-      counter.textContent = favorites.length ? `⭐ ${favorites.length} Favoritas guardadas` : '';
     }
 
     function rgbToHex(rgb) {
@@ -2251,7 +2226,7 @@
         document.getElementById('loading').style.display = 'block';
         document.getElementById('errorState').classList.remove('show');
 
-        const range = encodeURIComponent("'Camisetas'!A:R");
+        const range = encodeURIComponent("'Camisetas'!A:AA");
         const valuesUrl = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${range}?key=${API_KEY}`;
         const valuesResp = await fetch(valuesUrl);
         if (!valuesResp.ok) throw new Error(`Google Sheets API: ${valuesResp.status}`);
@@ -2316,7 +2291,6 @@
         }).filter(Boolean);
 
         document.getElementById('loading').style.display = 'none';
-        updateFavCounter();
         renderSportTabs();
         populateFilters();
         render();
@@ -2381,7 +2355,7 @@
 
     function renderStats(items) {
       const stats = [
-        { label: 'Piezas', value: items.length },
+        { label: 'Camisetas', value: items.length },
         { label: 'Equipos', value: unique(items, 'equipo').length },
         { label: 'Países', value: unique(items, 'pais').length },
         { label: 'Marcas', value: unique(items, 'marca').length }
@@ -2413,7 +2387,6 @@
       };
 
       const list = DATA.filter(d => {
-        if (showOnlyFavs && !favorites.includes(d.id)) return false;
         if (activeSport && d.deporte !== activeSport) return false;
         if (filters.pais && d.pais !== filters.pais) return false;
         if (filters.tipo && d.tipo !== filters.tipo) return false;
@@ -2548,9 +2521,7 @@
       const body = document.getElementById('tableBody');
 
       body.innerHTML = items.map((d, index) => {
-        const isFav = favorites.includes(d.id);
         return `<tr data-index="${index}">
-          <td onclick="toggleFavorite('${d.id}', event)" style="color:var(--accent-gold); font-size:16px;">${isFav ? '★' : '☆'}</td>
           <td>${d.temporada}</td>
           <td><strong>${d.equipo}</strong></td>
           <td>${d.club}</td>
@@ -2727,11 +2698,10 @@
 
       renderStats(items);
       renderActiveFiltersBar();
-      updateFavCounter();
 
       document.getElementById('resultsCount').textContent = items.length === total
-        ? `${total} piezas catalogadas`
-        : `${items.length} de ${total} piezas encontradas`;
+        ? `${total} camisetas catalogadas`
+        : `${items.length} de ${total} camisetas encontradas`;
 
       document.getElementById('emptyState').classList.toggle('show', empty && currentView !== 'totales');
       document.getElementById('gallery').style.display = currentView === 'grid' && !empty ? 'grid' : 'none';
