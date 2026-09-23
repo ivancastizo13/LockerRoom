@@ -224,10 +224,35 @@
 
     .sports-filter {
       grid-area: sports;
-      min-width: 0;
+      justify-self: stretch;
+      width: 100%;
       max-width: 100%;
+      min-width: 0;
       overflow-x: auto;
       scrollbar-width: none;
+    }
+
+    .sport-icon {
+      display: none;
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .sports-filter.compact .sport-btn {
+      width: 42px;
+      min-width: 42px;
+      padding: 7px 8px;
+      text-align: center;
+    }
+
+    .sports-filter.compact .sport-label {
+      display: none;
+    }
+
+    .sports-filter.compact .sport-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .sports-filter::-webkit-scrollbar {
@@ -320,7 +345,7 @@
     .filter-group {
       grid-area: filters;
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 8px;
       width: 100%;
       min-width: 0;
@@ -421,6 +446,14 @@
       padding: 92px 20px;
       color: var(--text-soft);
       text-align: center;
+    }
+
+    .empty-state {
+      display: none;
+    }
+
+    .empty-state.show {
+      display: block;
     }
 
     .loading {
@@ -802,6 +835,8 @@
 
     .modal-carousel {
       position: relative;
+      touch-action: pan-y;
+      touch-action: pan-y;
       z-index: 1;
       display: flex;
       width: 100%;
@@ -813,6 +848,7 @@
 
     .modal-carousel-image {
       position: relative;
+      touch-action: pan-y;
       z-index: 1;
       display: block;
       width: 100%;
@@ -1175,7 +1211,7 @@
       }
 
       .filter-group {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
       }
     }
 
@@ -1186,7 +1222,7 @@
       }
 
       .filter-group {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
       }
     }
 
@@ -1644,6 +1680,7 @@
             <th>Club</th>
             <th>País</th>
             <th>Tipo</th>
+            <th>Edición</th>
             <th>Marca</th>
             <th>Nº</th>
             <th>Nombre</th>
@@ -2140,7 +2177,14 @@
       const image = container.querySelector('.modal-carousel-image');
       if (!image) return;
 
-      image.addEventListener('click', () => openLightbox(image.src));
+      let ignoreNextClick = false;
+      image.addEventListener('click', () => {
+        if (ignoreNextClick) {
+          ignoreNextClick = false;
+          return;
+        }
+        openLightbox(image.src);
+      });
 
       const urls = await findModalCarouselImages(mainUrl);
       const currentContainer = document.getElementById(carouselId);
@@ -2217,6 +2261,33 @@
         showImage(currentIndex + 1);
       });
 
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchStartTime = 0;
+
+      currentContainer.addEventListener('touchstart', event => {
+        if (event.touches.length !== 1) return;
+        touchStartX = event.touches[0].clientX;
+        touchStartY = event.touches[0].clientY;
+        touchStartTime = Date.now();
+      }, { passive: true });
+
+      currentContainer.addEventListener('touchend', event => {
+        if (!touchStartTime || event.changedTouches.length !== 1) return;
+
+        const touch = event.changedTouches[0];
+        const deltaX = touch.clientX - touchStartX;
+        const deltaY = touch.clientY - touchStartY;
+        const elapsed = Date.now() - touchStartTime;
+
+        touchStartTime = 0;
+
+        if (Math.abs(deltaX) < 45 || Math.abs(deltaX) <= Math.abs(deltaY) || elapsed > 900) return;
+
+        ignoreNextClick = true;
+        showImage(currentIndex + (deltaX < 0 ? 1 : -1));
+      }, { passive: true });
+
       currentContainer.append(prevButton, nextButton, dots);
       showImage(0);
     }
@@ -2291,9 +2362,11 @@
         }).filter(Boolean);
 
         document.getElementById('loading').style.display = 'none';
+        document.getElementById('emptyState').classList.remove('show');
         renderSportTabs();
         populateFilters();
         render();
+        initSportsResizeObserver();
       } catch (error) {
         console.error('Error:', error);
         const errorDiv = document.getElementById('errorState');
@@ -2304,44 +2377,212 @@
     }
 
     function unique(arr, key) {
-      return [...new Set(arr.map(d => d[key]).filter(v => v && v !== 'N/A'))].sort();
+      return [...new Set(arr.map(d => d[key]).filter(v => v && v !== 'N/A'))]
+        .sort((a, b) => String(a).localeCompare(String(b), 'es', { sensitivity: 'base' }));
+    }
+
+    const FILTER_DEFS = [
+      { key: 'pais', label: 'País' },
+      { key: 'tipo', label: 'Tipo' },
+      { key: 'edicion', label: 'Edición' },
+      { key: 'marca', label: 'Marca' },
+      { key: 'autenticidad', label: 'Autenticidad' }
+    ];
+
+    function getCurrentFilterValues(excludeKey = '') {
+      const values = {};
+
+      FILTER_DEFS.forEach(filter => {
+        if (filter.key === excludeKey) return;
+        const id = `filter${filter.key.charAt(0).toUpperCase() + filter.key.slice(1)}`;
+        values[filter.key] = document.getElementById(id)?.value || '';
+      });
+
+      return values;
+    }
+
+    function getFilterSource(excludeKey = '') {
+      const selectedFilters = getCurrentFilterValues(excludeKey);
+
+      return DATA.filter(item => {
+        if (activeSport && item.deporte !== activeSport) return false;
+
+        return Object.entries(selectedFilters).every(([key, value]) => {
+          return !value || item[key] === value;
+        });
+      });
+    }
+
+    function getFilterId(key) {
+      return `filter${key.charAt(0).toUpperCase() + key.slice(1)}`;
+    }
+
+    function sanitizeFilterSelections() {
+      if (!activeSport) return;
+
+      const sportItems = DATA.filter(item => item.deporte === activeSport);
+
+      FILTER_DEFS.forEach(filter => {
+        const select = document.getElementById(getFilterId(filter.key));
+        if (!select || !select.value) return;
+
+        const stillValid = sportItems.some(item => item[filter.key] === select.value);
+        if (!stillValid) select.value = '';
+      });
     }
 
     function populateFilters() {
       const filterGroup = document.getElementById('filterGroup');
-      const cols = [
-        { key: 'pais', label: 'País' },
-        { key: 'tipo', label: 'Tipo' },
-        { key: 'marca', label: 'Marca' },
-        { key: 'autenticidad', label: 'Autenticidad' }
-      ];
+      const currentValues = {};
 
-      filterGroup.innerHTML = cols.map(c => {
-        const vals = unique(DATA, c.key);
-        const id = `filter${c.key.charAt(0).toUpperCase() + c.key.slice(1)}`;
-        return `<select id="${id}" aria-label="Filtrar por ${c.label}">
-          <option value="">${c.label} (Todos)</option>
-          ${vals.map(v => `<option value="${v}">${v}</option>`).join('')}
-        </select>`;
+      FILTER_DEFS.forEach(filter => {
+        const id = getFilterId(filter.key);
+        currentValues[filter.key] = document.getElementById(id)?.value || '';
+      });
+
+      filterGroup.innerHTML = FILTER_DEFS.map(filter => {
+        const values = unique(getFilterSource(filter.key), filter.key);
+        const selectedValue = values.includes(currentValues[filter.key])
+          ? currentValues[filter.key]
+          : '';
+
+        const options = values.map(value => {
+          const safeValue = String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+
+          return `<option value="${safeValue}">${value}</option>`;
+        }).join('');
+
+        return `
+          <select id="${getFilterId(filter.key)}" aria-label="Filtrar por ${filter.label}">
+            <option value="">${filter.label} (Todos)</option>
+            ${options}
+          </select>
+        `;
       }).join('');
 
-      cols.forEach(c => {
-        const id = `filter${c.key.charAt(0).toUpperCase() + c.key.slice(1)}`;
-        document.getElementById(id)?.addEventListener('change', render);
+      FILTER_DEFS.forEach(filter => {
+        const id = getFilterId(filter.key);
+        const select = document.getElementById(id);
+        const currentValue = currentValues[filter.key];
+
+        if (select && currentValue && [...select.options].some(option => option.value === currentValue)) {
+          select.value = currentValue;
+        }
+
+        select?.addEventListener('change', () => {
+          populateFilters();
+          render();
+        });
       });
     }
 
+    function sportIcon(sport) {
+        const normalized = normalizeSearchText(sport);
+        const icons = {
+          futbol: '⚽',
+          baloncesto: '🏀',
+          ciclismo: '🚲',
+          flag: '🏈',
+          futsal: '🥅',
+          tenis: '🎾',
+          rugby: '🏉',
+          'futbol americano': '🏈',
+          beisbol: '⚾',
+          voleibol: '🏐',
+          hockey: '🏒',
+          golf: '⛳',
+          atletismo: '🏃',
+          natacion: '🏊',
+          boxeo: '🥊',
+          automovilismo: '🏎️',
+          motociclismo: '🏍️',
+          formula1: '🏎️',
+          formulauno: '🏎️',
+          remo: '🚣',
+          vela: '⛵',
+          esqui: '🎿',
+          snowboard: '🏂',
+          surf: '🏄',
+          gimnasia: '🤸',
+          judo: '🥋',
+          karate: '🥋',
+          lucha: '🤼',
+          cricket: '🏏',
+          dardos: '🎯',
+          billar: '🎱',
+          ajedrez: '♟️',
+          padel: '🎾'
+        };
+        return icons[normalized] || '🏆';
+      }
+
     function renderSportTabs() {
-      const sports = unique(DATA, 'deporte');
+      const allSports = unique(DATA, 'deporte');
+      const special = [];
+      const rest = [];
+
+      allSports.forEach(s => {
+        const normalized = normalizeSearchText(s);
+        if (normalized === 'futbol') special.push(s);
+        else if (normalized === 'baloncesto') special.push(s);
+        else rest.push(s);
+      });
+
+      special.sort((a, b) => {
+        const order = { futbol: 0, baloncesto: 1 };
+        return order[normalizeSearchText(a)] - order[normalizeSearchText(b)];
+      });
+
+      rest.sort((a, b) => String(a).localeCompare(String(b), 'es', { sensitivity: 'base' }));
+      const sports = [...special, ...rest];
       const container = document.getElementById('sportsTabs');
-      let html = `<button class="sport-btn ${!activeSport && !showOnlyFavs ? 'active' : ''}" onclick="setSportFilter('')">Todos</button>`;
-      html += sports.map(s => `<button class="sport-btn ${activeSport === s && !showOnlyFavs ? 'active' : ''}" onclick="setSportFilter('${String(s).replace(/'/g, "\\'")}')">${s}</button>`).join('');
+      const allActive = !activeSport;
+
+      let html = `<button type="button" class="sport-btn ${allActive ? 'active' : ''}" title="Todos" aria-label="Todos" onclick="setSportFilter('')"><span class="sport-label">Todos</span><span class="sport-icon" aria-hidden="true">◉</span></button>`;
+
+      html += sports.map(s => {
+        const encoded = JSON.stringify(String(s)).replace(/\\/g, '\\\\').replace(/</g, '&lt;');
+        const icon = sportIcon(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+        const safeLabel = String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+        const active = activeSport === s ;
+        return `<button type="button" class="sport-btn ${active ? 'active' : ''}" title="${safeLabel}" aria-label="${safeLabel}" onclick='setSportFilter(${encoded})'><span class="sport-label">${safeLabel}</span><span class="sport-icon" aria-hidden="true">${icon}</span></button>`;
+      }).join('');
+
       container.innerHTML = html;
+      updateSportsCompactMode();
+    }
+
+    function updateSportsCompactMode() {
+      const container = document.getElementById('sportsTabs');
+      if (!container) return;
+
+      // El buscador conserva su espacio; el bloque de deportes ocupa exactamente
+      // el hueco que le deja la grid. Solo pasamos a iconos cuando ese hueco
+      // es demasiado pequeño para mostrar cómodamente los nombres.
+      container.classList.toggle('compact', container.clientWidth > 0 && container.clientWidth < 360);
+    }
+
+    function initSportsResizeObserver() {
+      const container = document.getElementById('sportsTabs');
+      if (!container || typeof ResizeObserver === 'undefined') return;
+
+      const observer = new ResizeObserver(updateSportsCompactMode);
+      observer.observe(container);
     }
 
     function setSportFilter(sport) {
       activeSport = sport;
       showOnlyFavs = false;
+      sanitizeFilterSelections();
+      populateFilters();
       renderSportTabs();
       render();
     }
@@ -2382,6 +2623,7 @@
       const filters = {
         pais: document.getElementById('filterPais')?.value || '',
         tipo: document.getElementById('filterTipo')?.value || '',
+        edicion: document.getElementById('filterEdicion')?.value || '',
         marca: document.getElementById('filterMarca')?.value || '',
         autenticidad: document.getElementById('filterAutenticidad')?.value || ''
       };
@@ -2390,6 +2632,7 @@
         if (activeSport && d.deporte !== activeSport) return false;
         if (filters.pais && d.pais !== filters.pais) return false;
         if (filters.tipo && d.tipo !== filters.tipo) return false;
+        if (filters.edicion && d.edicion !== filters.edicion) return false;
         if (filters.marca && d.marca !== filters.marca) return false;
         if (filters.autenticidad && d.autenticidad !== filters.autenticidad) return false;
 
@@ -2432,6 +2675,7 @@
       const filters = [
         { key: 'pais', el: document.getElementById('filterPais') },
         { key: 'tipo', el: document.getElementById('filterTipo') },
+        { key: 'edicion', el: document.getElementById('filterEdicion') },
         { key: 'marca', el: document.getElementById('filterMarca') },
         { key: 'autenticidad', el: document.getElementById('filterAutenticidad') }
       ];
@@ -2452,11 +2696,12 @@
       const id = `filter${key.charAt(0).toUpperCase() + key.slice(1)}`;
       const el = document.getElementById(id);
       if (el) el.value = '';
+      populateFilters();
       render();
     }
 
     function clearAllFilters() {
-      ['filterPais', 'filterTipo', 'filterMarca', 'filterAutenticidad'].forEach(id => {
+      ['filterPais', 'filterTipo', 'filterEdicion', 'filterMarca', 'filterAutenticidad'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.value = '';
       });
@@ -2495,6 +2740,7 @@
             <div class="card-details">
               ${d.pais ? `<span class="detail-tag" style="background:${d.colors.pais?.bg || 'var(--bg-card)'}; color:${d.colors.pais?.text || 'var(--text-main)'}">${d.pais}</span>` : ''}
               ${d.tipo ? `<span class="detail-tag" style="background:${d.colors.tipo?.bg || 'var(--bg-card)'}; color:${d.colors.tipo?.text || 'var(--text-main)'}">${d.tipo}</span>` : ''}
+              ${d.edicion ? `<span class="detail-tag" style="background:${d.colors.edicion?.bg || 'var(--bg-card)'}; color:${d.colors.edicion?.text || 'var(--text-main)'}">${d.edicion}</span>` : ''}
               ${d.marca !== 'N/A' ? `<span class="detail-tag" style="background:${d.colors.marca?.bg || 'var(--bg-card)'}; color:${d.colors.marca?.text || 'var(--text-main)'}">${d.marca}</span>` : ''}
               ${d.autenticidad ? `<span class="detail-tag" style="background:${d.colors.autenticidad?.bg || 'var(--bg-card)'}; color:${d.colors.autenticidad?.text || 'var(--text-main)'}">${d.autenticidad}</span>` : ''}
             </div>
@@ -2527,6 +2773,7 @@
           <td>${d.club}</td>
           <td>${d.pais}</td>
           <td>${d.tipo}</td>
+          <td>${d.edicion}</td>
           <td>${d.marca}</td>
           <td>${cleanJerseyText(d.numero) || '—'}</td>
           <td>${cleanJerseyText(d.nombre) || '—'}</td>
@@ -2690,8 +2937,6 @@
     }
 
     function render() {
-      if (DATA.length === 0) return;
-
       const items = getFiltered();
       const total = DATA.length;
       const empty = items.length === 0;
@@ -2703,7 +2948,11 @@
         ? `${total} camisetas catalogadas`
         : `${items.length} de ${total} camisetas encontradas`;
 
-      document.getElementById('emptyState').classList.toggle('show', empty && currentView !== 'totales');
+      document.getElementById('emptyState').classList.toggle(
+        'show',
+        empty && currentView !== 'totales'
+      );
+
       document.getElementById('gallery').style.display = currentView === 'grid' && !empty ? 'grid' : 'none';
       document.getElementById('tableView').classList.toggle('active', currentView === 'table' && !empty);
       document.getElementById('totalesView').classList.toggle('active', currentView === 'totales');
