@@ -356,6 +356,52 @@
       min-width: 0;
     }
 
+    .filter-toggle {
+      display: none;
+      grid-area: filter-toggle;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      min-height: 38px;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: rgba(0, 0, 0, 0.32);
+      color: var(--text-soft);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .filter-toggle:hover {
+      color: #FFF;
+      border-color: var(--border-hover);
+    }
+
+    .filter-toggle-icon {
+      transition: transform 0.18s ease;
+    }
+
+    .filter-toggle.open .filter-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    .filter-toggle-count {
+      display: inline-flex;
+      min-width: 20px;
+      height: 20px;
+      align-items: center;
+      justify-content: center;
+      padding: 0 6px;
+      border-radius: 999px;
+      background: rgba(56, 189, 248, 0.13);
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
     .sort-select {
       grid-area: sort;
       width: 100%;
@@ -1101,6 +1147,80 @@
       background: rgba(255, 255, 255, 0.04);
     }
 
+    @media (max-width: 768px) {
+      .table-view {
+        overflow: visible;
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      table {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        table-layout: fixed;
+        border-collapse: separate;
+        border-spacing: 0;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tbody {
+        display: grid;
+        width: 100%;
+        gap: 12px;
+      }
+
+      tbody tr {
+        display: block;
+        padding: 13px 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-md);
+        background: var(--bg-card);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+      }
+
+      tbody tr:hover {
+        background: var(--bg-card-hover);
+      }
+
+      tbody td {
+        display: grid;
+        grid-template-columns: minmax(86px, 34%) minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--border);
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+
+      tbody td:last-child {
+        border-bottom: 0;
+      }
+
+      tbody td::before {
+        content: attr(data-label);
+        color: var(--text-muted);
+        font-family: 'Space Mono', monospace;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        line-height: 1.4;
+        text-transform: uppercase;
+      }
+
+      tbody td strong {
+        color: #FFF;
+      }
+    }
+
     .totales-view {
       display: none;
       margin-top: 18px;
@@ -1266,25 +1386,36 @@
 
     @media (max-width: 820px) {
       .controls-inner {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         grid-template-areas:
-          "sports"
-          "search"
-          "sort"
-          "views"
-          "filters";
+          "sports sports"
+          "search search"
+          "sort views"
+          "filter-toggle filter-toggle"
+          "filters filters";
         align-items: stretch;
       }
 
       .sports-filter,
       .search-box,
       .sort-select,
-      .view-btns {
+      .view-btns,
+      .filter-toggle {
         width: 100%;
       }
 
+      .filter-toggle {
+        display: flex;
+      }
+
       .filter-group {
+        display: none;
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding: 2px 0 0;
+      }
+
+      .filter-group.open {
+        display: grid;
       }
 
       .view-btns {
@@ -1332,7 +1463,7 @@
       }
 
       .controls {
-        padding: 10px 0;
+        padding: 6px 0 7px;
       }
 
       .controls-inner,
@@ -1343,20 +1474,22 @@
       }
 
       .sports-filter {
-        padding: 3px;
+        padding: 2px;
+        gap: 5px;
       }
 
       .sport-btn,
       .view-btn {
-        min-height: 38px;
-        padding: 8px 12px;
+        min-height: 36px;
+        padding: 7px 10px;
       }
 
       .search-box input,
       .filter-group select,
-      .sort-select {
-        min-height: 42px;
-        font-size: 14px;
+      .sort-select,
+      .filter-toggle {
+        min-height: 40px;
+        font-size: 13px;
       }
 
       .filter-group select {
@@ -1424,7 +1557,14 @@
       }
 
       table {
-        min-width: 940px;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        table-layout: fixed;
+      }
+
+      tbody {
+        width: 100%;
       }
 
       th,
@@ -1507,12 +1647,22 @@
     }
 
     @media (max-width: 480px) {
+      tbody td {
+        grid-template-columns: minmax(78px, 38%) minmax(0, 1fr);
+        gap: 8px;
+        font-size: 12px;
+      }
+
 
       .controls-inner,
       .active-filters-bar,
       .results-count,
       .content {
         width: calc(100% - 20px);
+      }
+
+      .controls-inner {
+        gap: 7px;
       }
 
       .header-inner {
@@ -1643,6 +1793,10 @@
       <div class="search-box">
         <input type="text" id="search" placeholder="Buscar equipo, jugador, club, año..." autocomplete="off">
       </div>
+      <button type="button" class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterGroup">
+        <span>Filtros <span class="filter-toggle-count" id="filterToggleCount">0</span></span>
+        <span class="filter-toggle-icon" aria-hidden="true">⌄</span>
+      </button>
       <div class="filter-group" id="filterGroup"></div>
       <select id="sortSelect" class="sort-select" aria-label="Ordenar colección">
         <option value="rawid-desc">Por defecto</option>
@@ -2431,6 +2585,19 @@
       });
     }
 
+    function updateFilterToggleState() {
+      const toggle = document.getElementById('filterToggle');
+      const countEl = document.getElementById('filterToggleCount');
+      if (!toggle || !countEl) return;
+
+      const count = FILTER_DEFS.reduce((total, filter) => {
+        return total + (document.getElementById(getFilterId(filter.key))?.value ? 1 : 0);
+      }, 0);
+
+      countEl.textContent = count;
+      countEl.hidden = count === 0;
+    }
+
     function populateFilters() {
       const filterGroup = document.getElementById('filterGroup');
       const currentValues = {};
@@ -2475,50 +2642,55 @@
 
         select?.addEventListener('change', () => {
           populateFilters();
+          updateFilterToggleState();
           render();
         });
       });
+
+      updateFilterToggleState();
     }
 
     function sportIcon(sport) {
-        const normalized = normalizeSearchText(sport);
-        const icons = {
-          futbol: '⚽',
-          baloncesto: '🏀',
-          ciclismo: '🚲',
-          flag: '🏈',
-          futsal: '🥅',
-          tenis: '🎾',
-          rugby: '🏉',
-          'futbol americano': '🏈',
-          beisbol: '⚾',
-          voleibol: '🏐',
-          hockey: '🏒',
-          golf: '⛳',
-          atletismo: '🏃',
-          natacion: '🏊',
-          boxeo: '🥊',
-          automovilismo: '🏎️',
-          motociclismo: '🏍️',
-          formula1: '🏎️',
-          formulauno: '🏎️',
-          remo: '🚣',
-          vela: '⛵',
-          esqui: '🎿',
-          snowboard: '🏂',
-          surf: '🏄',
-          gimnasia: '🤸',
-          judo: '🥋',
-          karate: '🥋',
-          lucha: '🤼',
-          cricket: '🏏',
-          dardos: '🎯',
-          billar: '🎱',
-          ajedrez: '♟️',
-          padel: '🎾'
-        };
-        return icons[normalized] || '🏆';
-      }
+      const normalized = normalizeSearchText(sport);
+      const icons = {
+        futbol: '⚽',
+        baloncesto: '🏀',
+        tenis: '🎾',
+        rugby: '🏉',
+        'futbol americano': '🏈',
+        'flag football': '🏈',
+        'flag futbol': '🏈',
+        'flag': '🏈',
+        futsal: '🥅',
+        beisbol: '⚾',
+        voleibol: '🏐',
+        hockey: '🏒',
+        golf: '⛳',
+        ciclismo: '🚴',
+        atletismo: '🏃',
+        natacion: '🏊',
+        boxeo: '🥊',
+        automovilismo: '🏎️',
+        motociclismo: '🏍️',
+        formula1: '🏎️',
+        formulauno: '🏎️',
+        remo: '🚣',
+        vela: '⛵',
+        esqui: '🎿',
+        snowboard: '🏂',
+        surf: '🏄',
+        gimnasia: '🤸',
+        judo: '🥋',
+        karate: '🥋',
+        lucha: '🤼',
+        cricket: '🏏',
+        dardos: '🎯',
+        billar: '🎱',
+        ajedrez: '♟️',
+        padel: '🎾'
+      };
+      return icons[normalized] || '🏆';
+    }
 
     function renderSportTabs() {
       const allSports = unique(DATA, 'deporte');
@@ -2528,7 +2700,7 @@
       allSports.forEach(s => {
         const normalized = normalizeSearchText(s);
         if (normalized === 'futbol') special.push(s);
-        else if (normalized === 'baloncesto' ) special.push(s);
+        else if (normalized === 'baloncesto') special.push(s);
         else rest.push(s);
       });
 
@@ -2540,7 +2712,7 @@
       rest.sort((a, b) => String(a).localeCompare(String(b), 'es', { sensitivity: 'base' }));
       const sports = [...special, ...rest];
       const container = document.getElementById('sportsTabs');
-      const allActive = !activeSport;
+      const allActive = !activeSport && !showOnlyFavs;
 
       let html = `<button type="button" class="sport-btn ${allActive ? 'active' : ''}" title="Todos" aria-label="Todos" onclick="setSportFilter('')"><span class="sport-label">Todos</span><span class="sport-icon" aria-hidden="true">◉</span></button>`;
 
@@ -2552,22 +2724,25 @@
           .replace(/</g, '&lt;')
           .replace(/>/g, '&gt;')
           .replace(/"/g, '&quot;');
-        const active = activeSport === s ;
+        const active = activeSport === s && !showOnlyFavs;
         return `<button type="button" class="sport-btn ${active ? 'active' : ''}" title="${safeLabel}" aria-label="${safeLabel}" onclick='setSportFilter(${encoded})'><span class="sport-label">${safeLabel}</span><span class="sport-icon" aria-hidden="true">${icon}</span></button>`;
       }).join('');
 
       container.innerHTML = html;
-      updateSportsCompactMode();
+      requestAnimationFrame(updateSportsCompactMode);
     }
 
     function updateSportsCompactMode() {
       const container = document.getElementById('sportsTabs');
-      if (!container) return;
+      if (!container || !container.clientWidth) return;
 
-      // El buscador conserva su espacio; el bloque de deportes ocupa exactamente
-      // el hueco que le deja la grid. Solo pasamos a iconos cuando ese hueco
-      // es demasiado pequeño para mostrar cómodamente los nombres.
-      container.classList.toggle('compact', container.clientWidth > 0 && container.clientWidth < 360);
+      // Primero medimos con los nombres visibles. Si no caben todos en el
+      // espacio real disponible, cambiamos a iconos antes de que el overflow
+      // recorte parte de los botones.
+      container.classList.remove('compact');
+
+      const needsCompact = container.scrollWidth > container.clientWidth + 1;
+      container.classList.toggle('compact', needsCompact);
     }
 
     function initSportsResizeObserver() {
@@ -2706,6 +2881,7 @@
         if (el) el.value = '';
       });
       document.getElementById('search').value = '';
+      updateFilterToggleState();
       setSportFilter('');
     }
 
@@ -2768,17 +2944,17 @@
 
       body.innerHTML = items.map((d, index) => {
         return `<tr data-index="${index}">
-          <td>${d.temporada}</td>
-          <td><strong>${d.equipo}</strong></td>
-          <td>${d.club}</td>
-          <td>${d.pais}</td>
-          <td>${d.tipo}</td>
-          <td>${d.edicion}</td>
-          <td>${d.marca}</td>
-          <td>${cleanJerseyText(d.numero) || '—'}</td>
-          <td>${cleanJerseyText(d.nombre) || '—'}</td>
-          <td>${d.autenticidad}</td>
-          <td>${d.deporte}</td>
+          <td data-label="Temporada">${d.temporada}</td>
+          <td data-label="Equipo"><strong>${d.equipo}</strong></td>
+          <td data-label="Club">${d.club}</td>
+          <td data-label="País">${d.pais}</td>
+          <td data-label="Tipo">${d.tipo}</td>
+          <td data-label="Edición">${d.edicion}</td>
+          <td data-label="Marca">${d.marca}</td>
+          <td data-label="Nº">${cleanJerseyText(d.numero) || '—'}</td>
+          <td data-label="Nombre">${cleanJerseyText(d.nombre) || '—'}</td>
+          <td data-label="Autenticidad">${d.autenticidad}</td>
+          <td data-label="Deporte">${d.deporte}</td>
         </tr>`;
       }).join('');
 
@@ -2928,6 +3104,7 @@
       const container = document.getElementById('rankCards');
       container.innerHTML = '';
       renderRankCard(container, 'Top Equipos', items, 'equipo', 8);
+      renderRankCard(container, 'Top Clubes', items, 'club', 8);
       renderRankCard(container, 'Top Marcas', items, 'marca', 8);
       renderRankCard(container, 'Distribución por Países', items, 'pais', 8);
       renderRankCard(container, 'Épocas / Temporadas', items, 'temporada', 8);
@@ -2964,6 +3141,15 @@
 
     document.getElementById('search').addEventListener('input', render);
     document.getElementById('sortSelect').addEventListener('change', render);
+
+    document.getElementById('filterToggle')?.addEventListener('click', () => {
+      const toggle = document.getElementById('filterToggle');
+      const group = document.getElementById('filterGroup');
+      const open = !group.classList.contains('open');
+      group.classList.toggle('open', open);
+      toggle.classList.toggle('open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    });
 
     document.querySelectorAll('.view-btn').forEach(button => {
       button.addEventListener('click', () => {
